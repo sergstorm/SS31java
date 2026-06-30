@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<?import javafx.scene.control.TextField?>
+<AnchorPane prefHeight="600.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.Controllers.BossController">
+
+    <BorderPane prefHeight="600.0" prefWidth="1100.0" style="-fx-background-color: #EEEEEE;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+
+        <!-- TOP NAVIGATION BAR -->
+        <top>
+            <HBox alignment="CENTER_LEFT" prefHeight="65.0" prefWidth="1100.0" spacing="20.0" style="-fx-background-color: #388E3C;">
+                <children>
+                    <Label text="Boss Material Admin" textFill="WHITE">
+                        <font>
+                            <Font name="System Bold" size="16.0" />
+                        </font>
+                    </Label>
+                    <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                        <children>
+                            <TextField promptText="Search" style="-fx-background-color: rgba(255,255,255,0.15); -fx-text-fill: white; -fx-prompt-text-fill: #DDD; -fx-background-radius: 4;" />
+                        </children>
+
+                        <Button mnemonicParsing="false" onAction="#logout" prefHeight="25.0" prefWidth="118.0" text="Logout">
+                     <font>
+                        <Font name="System Bold Italic" size="18.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </HBox.margin></Button>
+
+                        <padding>
+                            <Insets right="20.0" />
+                        </padding>
+                    </HBox>
+                </children>
+                <padding>
+                    <Insets left="20.0" right="20.0" />
+                </padding>
+            </HBox>
+        </top>
+
+        <!-- LEFT SIDEBAR SCROLLABLE MENU -->
+        <left>
+            <ScrollPane fitToWidth="true" hbarPolicy="NEVER" prefWidth="240.0" style="-fx-background-color: #FFFFFF;" vbarPolicy="AS_NEEDED">
+                <content>
+                    <VBox prefWidth="238.0" spacing="5.0" style="-fx-background-color: #FFFFFF;">
+                        <children>
+                            <!-- User Profile Banner Section -->
+                            <VBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="100.0" spacing="5.0" style="-fx-background-color: #4CAF50;">
+                                <children>
+                                    <Label text="John Doe" textFill="WHITE">
+                                        <font>
+                                            <Font name="System Bold" size="14.0" />
+                                        </font>
+                                    </Label>
+                                    <Label text="Administrator" textFill="#E0E0E0">
+                                        <font>
+                                            <Font size="11.0" />
+                                        </font>
+                                    </Label>
+                                </children>
+                                <padding>
+                                    <Insets left="20.0" />
+                                </padding>
+                            </VBox>
+
+                            <!-- Sidebar Navigation Items -->
+                            <Button alignment="BASELINE_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="40.0" style="-fx-background-color: transparent;" text="Tables" />
+                            <Button alignment="BASELINE_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="40.0" style="-fx-background-color: transparent;" text="Forms" />
+                            <Button alignment="BASELINE_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="40.0" style="-fx-background-color: #EEEEEE;" text="UI Elements" textFill="#E53935">
+                                <font>
+                                    <Font name="System Bold" size="12.0" />
+                                </font>
+                            </Button>
+                            <Button alignment="BASELINE_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="35.0" style="-fx-background-color: transparent;" text="    Accordion" />
+                            <Button alignment="BASELINE_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="35.0" style="-fx-background-color: transparent;" text="    Avatars" />
+                            <Button alignment="BASELINE_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="35.0" style="-fx-background-color: transparent;" text="    Badges" />
+                            <Button alignment="BASELINE_LEFT" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="35.0" style="-fx-background-color: transparent;" text="    Card &amp; Paper" textFill="#E53935" />
+                        </children>
+                    </VBox>
+                </content>
+            </ScrollPane>
+        </left>
+
+        <!-- MAIN CARDS CONTAINER -->
+        <center>
+            <ScrollPane fitToWidth="true" style="-fx-background-color: transparent;">
+                <content>
+                    <FlowPane hgap="20.0" vgap="20.0">
+                        <padding>
+                            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                        </padding>
+                        <children>
+                            <!-- CARD 1: PROFILE CARD -->
+                            <Button fx:id="myComplexButton" onAction="#goToMyProfileTable" text="">
+                                <graphic>
+                                    <VBox mouseTransparent="true" prefHeight="300.0" prefWidth="250.0" style="-fx-background-color: #FFFFFF; -fx-background-radius: 4; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
+                                        <children>
+                                            <HBox alignment="CENTER" prefHeight="130.0" prefWidth="200.0" style="-fx-background-color: #8E24AA;">
+                                                <children>
+                                                    <Label text="Header Abstract Graphic Zone" textFill="WHITE" wrapText="true" />
+                                                </children>
+                                            </HBox>
+                                            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0" VBox.vgrow="ALWAYS">
+                                                <children>
+                                                    <Label text="John Doe">
+                                                        <font>
+                                                            <Font name="System Bold" size="16.0" />
+                                                        </font>
+                                                    </Label>
+                                                    <Label text="UX Designer" textFill="#757575" />
+                                                    <!-- Changed from Button to Label to prevent click conflicts -->
+                                                    <Label style="-fx-background-color: transparent; -fx-border-color: #BDBDBD; -fx-border-radius: 4; -fx-padding: 5 10 5 10;" text="CONNECT" textFill="#2196F3" />
+                                                </children>
+                                            </VBox>
+                                        </children>
+                                    </VBox>
+                                </graphic>
+                            </Button>
+
+                            <Button fx:id="postCardButton" onAction="#goToManagersTable" style="-fx-background-color: transparent; -fx-padding: 0;">
+                                <graphic>
+                                    <!-- Added mouseTransparent="true" to pass click events to the Button -->
+                                    <VBox mouseTransparent="true" prefHeight="300.0" prefWidth="250.0" style="-fx-background-color: #FFFFFF; -fx-background-radius: 4; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
+                                        <children>
+                                            <HBox alignment="CENTER_LEFT" prefHeight="60.0" spacing="10.0">
+                                                <padding>
+                                                    <Insets left="15.0" right="15.0" />
+                                                </padding>
+                                                <children>
+                                                    <VBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
+                                                        <children>
+                                                            <Label alignment="CENTER" prefHeight="19.0" prefWidth="223.0" text="My managers" textFill="#00ab33">
+                                                                <font>
+                                                                    <Font name="Century" size="19.0" />
+                                                                </font>
+                                                            </Label>
+                                                            <Label alignment="CENTER" prefHeight="16.0" prefWidth="221.0" text="Sept, 25 2018" textFill="#9E9E9E">
+                                                                <font>
+                                                                    <Font size="11.0" />
+                                                                </font>
+                                                            </Label>
+                                                        </children>
+                                                    </VBox>
+                                                </children>
+                                            </HBox>
+                                            <HBox alignment="CENTER" prefHeight="150.0" style="-fx-background-color: #E0E0E0;" VBox.vgrow="ALWAYS">
+                                                <children>
+                                                    <Label text="[ Image Asset Area ]" textFill="#757575" />
+                                                </children>
+                                            </HBox>
+                                        </children>
+                                    </VBox>
+                                </graphic>
+                            </Button>
+
+
+                            <Button fx:id="workersCardButton" onAction="#goToWorkersTable" style="-fx-background-color: transparent; -fx-padding: 0;">
+                                <graphic>
+                                    <!-- Added mouseTransparent="true" to pass click events to the Button -->
+                                    <VBox mouseTransparent="true" prefHeight="300.0" prefWidth="250.0" style="-fx-background-color: #FFFFFF; -fx-background-radius: 4; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
+                                        <children>
+                                            <HBox alignment="CENTER_LEFT" prefHeight="60.0" spacing="10.0">
+                                                <padding>
+                                                    <Insets left="15.0" right="15.0" />
+                                                </padding>
+                                                <children>
+                                                    <VBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
+                                                        <children>
+                                                            <Label alignment="CENTER" prefHeight="19.0" prefWidth="220.0" text="My workers" textFill="#094bff">
+                                                                <font>
+                                                                    <Font name="System Bold" size="19.0" />
+                                                                </font>
+                                                            </Label>
+                                                            <Label alignment="CENTER" prefHeight="16.0" prefWidth="222.0" text="Sept, 25 2018" textFill="#9E9E9E">
+                                                                <font>
+                                                                    <Font size="11.0" />
+                                                                </font>
+                                                            </Label>
+                                                        </children>
+                                                    </VBox>
+                                                </children>
+                                            </HBox>
+                                            <HBox alignment="CENTER" prefHeight="150.0" style="-fx-background-color: #E0E0E0;" VBox.vgrow="ALWAYS">
+                                                <children>
+                                                    <ImageView fitHeight="130.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                                                        <image>
+                                                            <!-- Updated URL to point to the raw GitHub image file -->
+                                                            <Image url="https://githubusercontent.com" />
+                                                        </image>
+                                                    </ImageView>
+                                                </children>
+                                            </HBox>
+                                        </children>
+                                    </VBox>
+                                </graphic>
+                            </Button>
+
+
+                        </children>
+                    </FlowPane>
+                </content>
+            </ScrollPane>
+        </center>
+    </BorderPane>
+</AnchorPane>

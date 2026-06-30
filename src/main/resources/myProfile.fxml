@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<?import javafx.scene.control.Button?>
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.Controllers.BossController">
+
+    <!-- CARD: PROFILE STANDALONE CARD -->
+    <!-- CARD: PROFILE STANDALONE CARD (MAXI LARGE DASHBOARD SIZE) -->
+    <VBox prefHeight="800.0" prefWidth="1200.0" style="-fx-background-color: #FFFFFF; -fx-background-radius: 12; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.15), 25, 0, 0, 0);">
+        <children>
+
+            <!-- TOP HEADER BLOCK: PROFILE BACKGROUND (SCALED FOR 1200x800) -->
+            <HBox alignment="CENTER" prefHeight="280.0" prefWidth="1200.0" style="-fx-background-color: #009688; -fx-background-radius: 12 12 0 0;">
+                <children>
+                    <!-- Enlarged perfect circle frame for avatar icon/image -->
+                    <VBox alignment="CENTER" prefHeight="180.0" prefWidth="180.0" style="-fx-background-color: #FFFFFF; -fx-background-radius: 1000;">
+                        <children>
+                            <Label text="👤" textFill="#009688">
+                                <font>
+                                    <Font size="72.0" />
+                                </font>
+                            </Label>
+                        </children>
+                    </VBox>
+                </children>
+            </HBox>
+
+            <!-- BOTTOM INFORMATION BLOCK -->
+            <VBox alignment="TOP_CENTER" prefHeight="520.0" prefWidth="1200.0" spacing="20.0" VBox.vgrow="ALWAYS">
+                <padding>
+                    <Insets bottom="40.0" left="60.0" right="60.0" top="40.0" />
+                </padding>
+                <children>
+                    <!-- Enlarged User Name -->
+                    <Label text="Alex Morgan" textFill="#212121">
+                        <font>
+                            <Font name="System Bold" size="42.0" />
+                        </font>
+                    </Label>
+
+                    <!-- Account Type / Role Tag -->
+                    <Label style="-fx-background-color: #E0F2F1; -fx-background-radius: 25; -fx-padding: 8 24 8 24;" text="ADMINISTRATOR" textFill="#004D40">
+                        <font>
+                            <Font name="System Bold" size="16.0" />
+                        </font>
+                    </Label>
+
+                    <!-- Email Metadata -->
+                    <Label text="alex.morgan@company.com" textFill="#757575">
+                        <font>
+                            <Font size="22.0" />
+                        </font>
+                    </Label>
+
+                    <!-- Spacer to push the footer button decoration down -->
+                    <Pane VBox.vgrow="ALWAYS">
+                  <children>
+      
+                          <!-- Styled Action Label acting as a prominent flat design button -->
+                          <Label alignment="CENTER" layoutX="336.0" layoutY="10.0" prefHeight="60.0" prefWidth="400.0"
+                                 style="-fx-background-color: transparent; -fx-border-color: #009688; -fx-border-radius: 8; -fx-border-width: 2; -fx-padding: 15;"
+                                 text="EDIT PROFILE" textFill="#009688">
+                              <font>
+                                  <Font name="System Bold" size="18.0" />
+                              </font>
+                          </Label>
+                  </children></Pane>
+                    <Button fx:id="backToLanding" onAction="#goBackToLandingPage"
+                            prefHeight="40.0" prefWidth="300.0"
+                            style="-fx-background-color: transparent; -fx-border-color: #BDBDBD; -fx-border-radius: 6; -fx-text-fill: #757575; -fx-font-weight: bold;"
+                            text="GO BACK" />
+
+                </children>
+            </VBox>
+        </children>
+    </VBox>
+
+
+
+</AnchorPane>
