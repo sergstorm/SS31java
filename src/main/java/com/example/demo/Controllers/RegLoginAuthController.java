@@ -103,7 +103,7 @@ public class RegLoginAuthController
     @FXML
     public void switchToView9(ActionEvent event) throws IOException {
         // Load the FXML file for view 2
-        root = FXMLLoader.load(getClass().getResource("/landing2.fxml"));
+        root = FXMLLoader.load(getClass().getResource("/managersProfile.fxml"));
         // Get the current Stage from the button click event
         stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         // Update the existing scene with the new root layout
@@ -116,7 +116,20 @@ public class RegLoginAuthController
     @FXML
     public void switchToView10(ActionEvent event) throws IOException {
         // Load the FXML file for view 2
-        root = FXMLLoader.load(getClass().getResource("/landing3.fxml"));
+        root = FXMLLoader.load(getClass().getResource("/workersProfile.fxml"));
+        // Get the current Stage from the button click event
+        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        // Update the existing scene with the new root layout
+        stage.getScene().getWindow().setHeight(800);
+        stage.getScene().getWindow().setWidth(1200);
+        stage.centerOnScreen();
+        stage.getScene().setRoot(root);
+    }
+
+    @FXML
+    public void switchToView11(ActionEvent event) throws IOException {
+        // Load the FXML file for view 2
+        root = FXMLLoader.load(getClass().getResource("/landingManager.fxml"));
         // Get the current Stage from the button click event
         stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         // Update the existing scene with the new root layout
@@ -168,18 +181,21 @@ public class RegLoginAuthController
 
         if (Objects.equals(login, "1") && Objects.equals(password, "1"))
         {
+            Usuario boos = new Boss(1,"BBB","","","");
             switchToView3(actionEvent);
-            System.out.println("Success 2 !!! Boss");
+            System.out.println("Success 2 !!! Boss ---- " + boos.getName());
         }
         else if (Objects.equals(login, "2") && Objects.equals(password, "2"))
         {
-            switchToView9(actionEvent);
-            System.out.println("Success 3 !!! Manager");
+            Usuario manager = new Manager(2,"MMM","","","");
+            switchToView11(actionEvent);
+            System.out.println("Success 3 !!! Manager   ---   "+manager.getName());
         }
         else if (Objects.equals(login, "3") && Objects.equals(password, "3"))
         {
+            Usuario worker = new Worker(3,"WWW","","","");
             switchToView10(actionEvent);
-            System.out.println("Success 4 !!! Worker");
+            System.out.println("Success 4 !!! Worker"+worker.getName());
         }
         else
             System.out.println("Exeption");

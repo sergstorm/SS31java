@@ -14,7 +14,7 @@
         <top>
             <HBox alignment="CENTER_LEFT" prefHeight="65.0" prefWidth="1100.0" spacing="20.0" style="-fx-background-color: #388E3C;">
                 <children>
-                    <Label text="Boss Material Admin" textFill="WHITE">
+                    <Label text="Manager" textFill="WHITE">
                         <font>
                             <Font name="System Bold" size="16.0" />
                         </font>
@@ -57,7 +57,7 @@
                                             <Font name="System Bold" size="14.0" />
                                         </font>
                                     </Label>
-                                    <Label text="Administrator" textFill="#E0E0E0">
+                                    <Label text="Manager" textFill="#E0E0E0">
                                         <font>
                                             <Font size="11.0" />
                                         </font>
@@ -96,36 +96,7 @@
                         </padding>
                         <children>
                             <!-- CARD 1: PROFILE CARD -->
-                            <Button fx:id="myComplexButton" onAction="#goToMyProfileTable" text="">
-                                <graphic>
-                                    <VBox mouseTransparent="true" prefHeight="300.0" prefWidth="250.0" style="-fx-background-color: #FFFFFF; -fx-background-radius: 4; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
-                                        <children>
-                                            <HBox alignment="CENTER" prefHeight="130.0" prefWidth="200.0" style="-fx-background-color: #8E24AA;">
-                                                <children>
-                                       <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
-                                          <image>
-                                             <Image url="@img/b.jpeg" />
-                                          </image>
-                                       </ImageView>
-                                                    <Label text=" Este Yo" textFill="WHITE" wrapText="true" />
-                                                </children>
-                                            </HBox>
-                                            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0" VBox.vgrow="ALWAYS">
-                                                <children>
-                                                    <Label text="John Doe">
-                                                        <font>
-                                                            <Font name="System Bold" size="16.0" />
-                                                        </font>
-                                                    </Label>
-                                                    <Label text="UX Designer" textFill="#757575" />
-                                                    <!-- Changed from Button to Label to prevent click conflicts -->
-                                                    <Label style="-fx-background-color: transparent; -fx-border-color: #BDBDBD; -fx-border-radius: 4; -fx-padding: 5 10 5 10;" text="CONNECT" textFill="#2196F3" />
-                                                </children>
-                                            </VBox>
-                                        </children>
-                                    </VBox>
-                                </graphic>
-                            </Button>
+
 
                             <Button fx:id="postCardButton" onAction="#goToManagersTable" style="-fx-background-color: transparent; -fx-padding: 0;">
                                 <graphic>

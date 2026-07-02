@@ -113,6 +113,42 @@ public class BossController {
     }
 
     public void logout(ActionEvent actionEvent) throws IOException {
+        String a = "1";
+        String b = "2";
+        String c = "3";
+        if (a.equals("1"))
          switchToView8(actionEvent);
+        else if (b.equals("2")) {
+            switchToView6(actionEvent);
+        }
+        else if (c.equals("3")) {
+            switchToView6(actionEvent);
+        }
+    }
+    public void logout2(ActionEvent actionEvent) throws IOException {
+        String a = "1";
+        String b = "2";
+        String c = "3";
+        if (a.equals("1"))
+            switchToView8(actionEvent);
+        else if (b.equals("2")) {
+            switchToView6(actionEvent);
+        }
+        else if (c.equals("3")) {
+            switchToView6(actionEvent);
+        }
+    }
+    public void logout3(ActionEvent actionEvent) throws IOException {
+        String a = "1";
+        String b = "2";
+        String c = "3";
+        if (a.equals("1"))
+            switchToView8(actionEvent);
+        else if (b.equals("2")) {
+            switchToView6(actionEvent);
+        }
+        else if (c.equals("3")) {
+            switchToView6(actionEvent);
+        }
     }
 }
