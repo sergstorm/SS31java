@@ -101,7 +101,13 @@
                             <Button fx:id="backToLanding" onAction="#logout"
                                     prefHeight="40.0" prefWidth="300.0"
                                     style="-fx-background-color: transparent; -fx-border-color: #BDBDBD; -fx-border-radius: 6; -fx-text-fill: #757575; -fx-font-weight: bold;"
-                                    text="SIGN OUT" />
+                                    text="SIGN OUT"
+                            />
+                            <Button fx:id="backToLanding2" onAction="#goBackToLandingPageManagers"
+                                    prefHeight="40.0" prefWidth="300.0"
+                                    style="-fx-background-color: transparent; -fx-border-color: #BDBDBD; -fx-border-radius: 6; -fx-text-fill: #757575; -fx-font-weight: bold;"
+                                    text="BackToLanding"
+                            />
                         </children>
                     </VBox>
                 </children>

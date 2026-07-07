@@ -29,11 +29,14 @@ import static javafx.scene.input.KeyCode.T;
 public class RegLoginAuthController
 {
 
-    public TextField usernameField;
-    public TextField emailField;
+
     public PasswordField passwordField;
     public TextField loginUsernameField;
     public PasswordField loginPasswordField;
+    public TextField usernameField123;
+    public TextField regUsername;
+    public TextField regEmail;
+    public PasswordField regPassword;
     private Stage stage;
     private Scene scene;
     private Parent root;
@@ -100,18 +103,7 @@ public class RegLoginAuthController
         stage.getScene().setRoot(root);
     }
 
-    @FXML
-    public void switchToView9(ActionEvent event) throws IOException {
-        // Load the FXML file for view 2
-        root = FXMLLoader.load(getClass().getResource("/managersProfile.fxml"));
-        // Get the current Stage from the button click event
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        // Update the existing scene with the new root layout
-        stage.getScene().getWindow().setHeight(800);
-        stage.getScene().getWindow().setWidth(1200);
-        stage.centerOnScreen();
-        stage.getScene().setRoot(root);
-    }
+
 
     @FXML
     public void switchToView10(ActionEvent event) throws IOException {
@@ -179,21 +171,23 @@ public class RegLoginAuthController
            String login = loginUsernameField.getText();
            String password  = loginPasswordField.getText();
 
+
+
         if (Objects.equals(login, "1") && Objects.equals(password, "1"))
         {
-            Usuario boos = new Boss(1,"BBB","","","");
+            Usuario boos = new Boss(1,"BBB","","boss","");
             switchToView3(actionEvent);
             System.out.println("Success 2 !!! Boss ---- " + boos.getName());
         }
         else if (Objects.equals(login, "2") && Objects.equals(password, "2"))
         {
-            Usuario manager = new Manager(2,"MMM","","","");
+            Usuario manager = new Manager(2,"MMM","","manager","");
             switchToView11(actionEvent);
             System.out.println("Success 3 !!! Manager   ---   "+manager.getName());
         }
         else if (Objects.equals(login, "3") && Objects.equals(password, "3"))
         {
-            Usuario worker = new Worker(3,"WWW","","","");
+            Usuario worker = new Worker(3,"WWW","","worker","");
             switchToView10(actionEvent);
             System.out.println("Success 4 !!! Worker"+worker.getName());
         }
@@ -202,6 +196,13 @@ public class RegLoginAuthController
     }
 
     public void handleRegistration(ActionEvent actionEvent) throws IOException {
+
+        String userName = regUsername.getText();
+        String email = regEmail.getText();
+        String passwd = regPassword.getText();
+
+
+
         System.out.println("Hi ");
         if (true)
         {

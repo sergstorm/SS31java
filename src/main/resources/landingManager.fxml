@@ -23,6 +23,7 @@
                         <children>
                             <TextField promptText="Search" style="-fx-background-color: rgba(255,255,255,0.15); -fx-text-fill: white; -fx-prompt-text-fill: #DDD; -fx-background-radius: 4;" />
                         </children>
+                  <Button mnemonicParsing="false" onAction="#goBackToMain" text="GoBAckToMain" />
 
                         <Button mnemonicParsing="false" onAction="#logout" prefHeight="25.0" prefWidth="118.0" text="Logout">
                      <font>
@@ -30,7 +31,8 @@
                      </font>
                      <HBox.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                     </HBox.margin></Button>
+                     </HBox.margin>
+                        </Button>
 
                         <padding>
                             <Insets right="20.0" />

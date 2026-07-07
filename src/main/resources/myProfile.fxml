@@ -1,15 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<?import javafx.scene.control.Button?>
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.Controllers.BossController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.Controllers.BossController">
 
     <!-- CARD: PROFILE STANDALONE CARD -->
     <!-- CARD: PROFILE STANDALONE CARD (MAXI LARGE DASHBOARD SIZE) -->
@@ -29,6 +25,11 @@
                             </Label>
                         </children>
                     </VBox>
+               <Button fx:id="bplo" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#logoutFromBossProfile" prefHeight="77.0" prefWidth="176.0" text="logout" textAlignment="JUSTIFY">
+                  <font>
+                     <Font size="33.0" />
+                  </font>
+               </Button>
                 </children>
             </HBox>
 
@@ -46,14 +47,14 @@
                     </Label>
 
                     <!-- Account Type / Role Tag -->
-                    <Label style="-fx-background-color: #E0F2F1; -fx-background-radius: 25; -fx-padding: 8 24 8 24;" text="ADMINISTRATOR" textFill="#004D40">
+                    <Label style="-fx-background-color: #E0F2F1; -fx-background-radius: 25; -fx-padding: 8 24 8 24;" text="Boss" textFill="#004D40">
                         <font>
                             <Font name="System Bold" size="16.0" />
                         </font>
                     </Label>
 
                     <!-- Email Metadata -->
-                    <Label text="alex.morgan@company.com" textFill="#757575">
+                    <Label fx:id="bossEmail" text="alex.morgan@company.com" textFill="#757575">
                         <font>
                             <Font size="22.0" />
                         </font>
@@ -64,18 +65,13 @@
                   <children>
       
                           <!-- Styled Action Label acting as a prominent flat design button -->
-                          <Label alignment="CENTER" layoutX="336.0" layoutY="10.0" prefHeight="60.0" prefWidth="400.0"
-                                 style="-fx-background-color: transparent; -fx-border-color: #009688; -fx-border-radius: 8; -fx-border-width: 2; -fx-padding: 15;"
-                                 text="EDIT PROFILE" textFill="#009688">
+                          <Button fx:id="bpr" alignment="CENTER" layoutX="336.0" layoutY="10.0" onAction="#editBossProfile" prefHeight="60.0" prefWidth="400.0" style="-fx-background-color: transparent; -fx-border-color: #009688; -fx-border-radius: 8; -fx-border-width: 2; -fx-padding: 15;" text="EDIT PROFILE" textFill="#009688">
                               <font>
                                   <Font name="System Bold" size="18.0" />
                               </font>
-                          </Label>
+                          </Button>
                   </children></Pane>
-                    <Button fx:id="backToLanding" onAction="#goBackToLandingPage"
-                            prefHeight="40.0" prefWidth="300.0"
-                            style="-fx-background-color: transparent; -fx-border-color: #BDBDBD; -fx-border-radius: 6; -fx-text-fill: #757575; -fx-font-weight: bold;"
-                            text="GO BACK" />
+                    <Button fx:id="backToLanding" onAction="#goBackToLandingPage" prefHeight="40.0" prefWidth="300.0" style="-fx-background-color: transparent; -fx-border-color: #BDBDBD; -fx-border-radius: 6; -fx-text-fill: #757575; -fx-font-weight: bold;" text="GO BACK" />
 
                 </children>
             </VBox>

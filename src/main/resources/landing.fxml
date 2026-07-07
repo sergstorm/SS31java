@@ -23,6 +23,7 @@
                         <children>
                             <TextField promptText="Search" style="-fx-background-color: rgba(255,255,255,0.15); -fx-text-fill: white; -fx-prompt-text-fill: #DDD; -fx-background-radius: 4;" />
                         </children>
+                  <Button alignment="CENTER_RIGHT" contentDisplay="RIGHT" mnemonicParsing="false" text="Go To" />
 
                         <Button mnemonicParsing="false" onAction="#logout" prefHeight="25.0" prefWidth="118.0" text="Logout">
                      <font>
@@ -167,44 +168,7 @@
                             </Button>
 
 
-                            <Button fx:id="workersCardButton" onAction="#goToWorkersTable" style="-fx-background-color: transparent; -fx-padding: 0;">
-                                <graphic>
-                                    <!-- Added mouseTransparent="true" to pass click events to the Button -->
-                                    <VBox mouseTransparent="true" prefHeight="300.0" prefWidth="250.0" style="-fx-background-color: #FFFFFF; -fx-background-radius: 4; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
-                                        <children>
-                                            <HBox alignment="CENTER_LEFT" prefHeight="60.0" spacing="10.0">
-                                                <padding>
-                                                    <Insets left="15.0" right="15.0" />
-                                                </padding>
-                                                <children>
-                                                    <VBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
-                                                        <children>
-                                                            <Label alignment="CENTER" prefHeight="19.0" prefWidth="220.0" text="My workers" textFill="#094bff">
-                                                                <font>
-                                                                    <Font name="System Bold" size="19.0" />
-                                                                </font>
-                                                            </Label>
-                                                            <Label alignment="CENTER" prefHeight="16.0" prefWidth="222.0" text="Sept, 25 2018" textFill="#9E9E9E">
-                                                                <font>
-                                                                    <Font size="11.0" />
-                                                                </font>
-                                                            </Label>
-                                                        </children>
-                                                    </VBox>
-                                                </children>
-                                            </HBox>
-                                            <HBox alignment="CENTER" prefHeight="150.0" style="-fx-background-color: #E0E0E0;" VBox.vgrow="ALWAYS">
-                                                <children>
-                                                    <ImageView fitHeight="130.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
-                                          <image>
-                                             <Image url="@img/w.jpeg" />
-                                          </image></ImageView>
-                                                </children>
-                                            </HBox>
-                                        </children>
-                                    </VBox>
-                                </graphic>
-                            </Button>
+                            <Button fx:id="workersCardButton" onAction="#goToWorkersTable" style="-fx-background-color: transparent; -fx-padding: 0;" />
 
 
                         </children>

@@ -6,9 +6,9 @@ import java.sql.SQLException;
 
 public class Conexion
 {
-    static String URL ="jdbc:mysql://bv0o2fzngveyhydtipmi-mysql.services.clever-cloud.com:3306/bv0o2fzngveyhydtipmi";
-    private static String USER ="ueasacbdkyejnoud";
-    private static String PASSWORD ="VGnaOaoVZ2cjfQjNwoc6";
+    static String URL ="jdbc:postgresql://localhost:5432/final3c";
+    private static String USER ="postgres";
+    private static String PASSWORD ="qweqwe1Q";
 
 
     private static Connection connect;
@@ -36,7 +36,7 @@ public class Conexion
          }
          return instance;
      }
-     public Connection getConnection()
+     public Connection getConection()
      {
          return connect;
      }

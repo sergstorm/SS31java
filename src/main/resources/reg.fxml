@@ -19,9 +19,9 @@
                 <Font name="System Bold" size="20.0" />
             </font>
         </Label>
-        <TextField fx:id="usernameField" promptText="Username" />
-        <TextField fx:id="emailField" promptText="Email Address" />
-        <PasswordField fx:id="passwordField" promptText="Password" />
+        <TextField fx:id="regUsername" promptText="Username" />
+        <TextField fx:id="regEmail" promptText="Email Address" />
+        <PasswordField fx:id="regPassword" promptText="Password" />
         <Button mnemonicParsing="false" onAction="#handleRegistration" prefWidth="150.0" text="Register" />
         <Button mnemonicParsing="false" onAction="#switchToView2" style="-fx-background-color: transparent; -fx-text-fill: #0066cc;" text="Already have an account? Log in" />
     </children>

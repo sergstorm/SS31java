@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.example.demo.Controllers.EditTaskController"
+            prefWidth="700"
+            prefHeight="500"
+            style="-fx-background-color: #F5F7FA;">
+
+    <top>
+        <VBox spacing="5" style="-fx-background-color: white; -fx-padding: 20;">
+            <Label text="Edit Task">
+                <font>
+                    <Font name="System Bold" size="24"/>
+                </font>
+            </Label>
+
+            <Label text="Update the selected task information."
+                   style="-fx-text-fill: #8A92A6;"/>
+        </VBox>
+    </top>
+
+    <center>
+        <GridPane hgap="20" vgap="18" style="-fx-background-color: white; -fx-padding: 30;">
+
+            <columnConstraints>
+                <ColumnConstraints prefWidth="150"/>
+                <ColumnConstraints hgrow="ALWAYS"/>
+            </columnConstraints>
+
+            <Label text="Task ID"
+                   GridPane.rowIndex="0"
+                   GridPane.columnIndex="0"/>
+
+            <TextField fx:id="taskIdField"
+                       editable="false"
+                       GridPane.rowIndex="0"
+                       GridPane.columnIndex="1"/>
+
+            <Label text="Task Description"
+                   GridPane.rowIndex="1"
+                   GridPane.columnIndex="0"/>
+
+            <TextArea fx:id="taskNameField"
+                      prefRowCount="4"
+                      wrapText="true"
+                      GridPane.rowIndex="1"
+                      GridPane.columnIndex="1"/>
+
+            <Label text="Priority"
+                   GridPane.rowIndex="2"
+                   GridPane.columnIndex="0"/>
+
+            <ComboBox fx:id="priorityCombo"
+                      prefWidth="250"
+                      GridPane.rowIndex="2"
+                      GridPane.columnIndex="1"/>
+
+            <Label text="Due Date"
+                   GridPane.rowIndex="3"
+                   GridPane.columnIndex="0"/>
+
+            <DatePicker fx:id="deadlinePicker"
+                        GridPane.rowIndex="3"
+                        GridPane.columnIndex="1"/>
+
+            <Label text="Status"
+                   GridPane.rowIndex="4"
+                   GridPane.columnIndex="0"/>
+
+            <ComboBox fx:id="statusCombo"
+                      prefWidth="250"
+                      GridPane.rowIndex="4"
+                      GridPane.columnIndex="1"/>
+
+        </GridPane>
+    </center>
+
+    <bottom>
+        <HBox alignment="CENTER_RIGHT"
+              spacing="15"
+              style="-fx-padding: 20; -fx-background-color: white;">
+
+
+
+            <Button text="Update Task"
+                    onAction="#handleUpdate"
+                    prefWidth="140"
+                    style="-fx-background-color: #094BFF; -fx-text-fill: white; -fx-font-weight: bold;"/>
+        </HBox>
+    </bottom>
+
+</BorderPane>
