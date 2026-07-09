@@ -6,7 +6,9 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.shape.*?>
 
-<BorderPane prefHeight="650" prefWidth="800" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.Controllers.BossController">
+<?import javafx.scene.text.Font?>
+<BorderPane prefHeight="650" prefWidth="800" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.example.demo.Controllers.BossController">
 
     <center>
         <VBox alignment="TOP_CENTER" spacing="20">
@@ -22,12 +24,20 @@
                         <Circle radius="180" />
                     </clip>
                <image>
-                  <Image url="@img/b.jpeg" />
+                  <Image url="@img/usuario_14.jpg" />
                </image>
                 </ImageView>
 
-                <Button onAction="#handleChangePhoto" text="Change Photo" />
+                <Button onAction="#handleSelectImage" text="Change Photo" />
+                <Button onAction="#goBackToLandingPage" text="Go back" />
             </VBox>
+
+            <Label text="Message" fx:id="bossMessageProfile">
+                <font>
+                    <Font name="System Bold" size="16.0" />
+                </font>
+            </Label>
+
 
             <!-- Profile Form -->
             <GridPane hgap="15" vgap="15">
@@ -39,41 +49,24 @@
 
                 <Label text="Full Name:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
 
-                <TextField fx:id="nameField" promptText="Enter full name" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                <TextField fx:id="bossNameField" promptText="Enter full name" GridPane.columnIndex="1" GridPane.rowIndex="0" />
 
                 <Label text="Email:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
 
-                <TextField fx:id="emailField" promptText="Enter email" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                <TextField fx:id="bossEmailField" promptText="Enter email" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
-                <Label text="Phone:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                <Label text="Password" GridPane.columnIndex="0" GridPane.rowIndex="2" />
 
-                <TextField fx:id="phoneField" promptText="Enter phone number" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                <TextField fx:id="bossPassField" promptText="Enter email" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+               <rowConstraints>
 
-                <Label text="Date of Birth:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
-
-                <DatePicker fx:id="dobPicker" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-
-                <Label text="Address:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
-
-                <TextField fx:id="addressField" promptText="Enter address" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-
-                <Label text="Bio:" GridPane.columnIndex="0" GridPane.rowIndex="5" />
-
-                <TextArea fx:id="bioArea" prefRowCount="4" promptText="Tell us about yourself..." wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-            <rowConstraints>
-               <RowConstraints />
-               <RowConstraints />
-               <RowConstraints />
-               <RowConstraints />
-               <RowConstraints />
-               <RowConstraints />
             </rowConstraints>
 
             </GridPane>
 
             <!-- Buttons -->
             <HBox alignment="CENTER" spacing="20">
-                <Button onAction="#handleSave" prefWidth="120" text="Save" />
+                <Button fx:id="bossChanfeProfileButton" onAction="#boosHandleSave" prefWidth="120" text="Save" />
             </HBox>
 
         </VBox>

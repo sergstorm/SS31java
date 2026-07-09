@@ -85,7 +85,10 @@
         <HBox alignment="CENTER_RIGHT"
               spacing="15"
               style="-fx-padding: 20; -fx-background-color: white;">
-
+            <Button text="BackToworkProfile"
+                    onAction="#backToWorkProfile"
+                    prefWidth="140"
+                    style="-fx-background-color: #094BFF; -fx-text-fill: white; -fx-font-weight: bold;"/>
 
 
             <Button text="Update Task"

@@ -19,9 +19,14 @@
                 <Font name="System Bold" size="20.0" />
             </font>
         </Label>
+        <Label fx:id="logLable" text="Message">
+            <font>
+                <Font name="System Bold" size="20.0" />
+            </font>
+        </Label>
         <TextField fx:id="loginUsernameField" promptText="Username or Email" />
         <PasswordField fx:id="loginPasswordField" promptText="Password" />
-        <Button mnemonicParsing="false" onAction="#handleLogin" prefWidth="150.0" text="Log In" />
+        <Button mnemonicParsing="false" onAction="#login" prefWidth="150.0" text="Log In" />
         <Button mnemonicParsing="false" onAction="#switchToView1" style="-fx-background-color: transparent; -fx-text-fill: #0066cc;" text="Don't have an account? Register" />
     </children>
 </VBox>

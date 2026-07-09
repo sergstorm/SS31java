@@ -6,7 +6,8 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="600.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.Controllers.BossController">
+<AnchorPane prefHeight="600.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.example.demo.Controllers.BossController">
 
     <BorderPane prefHeight="600.0" prefWidth="1100.0" style="-fx-background-color: #EEEEEE;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 
@@ -23,7 +24,7 @@
                         <children>
                             <TextField promptText="Search" style="-fx-background-color: rgba(255,255,255,0.15); -fx-text-fill: white; -fx-prompt-text-fill: #DDD; -fx-background-radius: 4;" />
                         </children>
-                  <Button mnemonicParsing="false" onAction="#goBackToMain" text="GoBAckToMain" />
+                  <Button mnemonicParsing="false" onAction="#goBaQckToMain" text="GoBAckToMain" />
 
                         <Button mnemonicParsing="false" onAction="#logout" prefHeight="25.0" prefWidth="118.0" text="Logout">
                      <font>
