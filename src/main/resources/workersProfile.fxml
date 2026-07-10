@@ -57,41 +57,60 @@
                             </Label>
 
                             <!-- Metadata Details Grid -->
-                            <VBox spacing="10.0" style="-fx-background-color: #F8FAFC; -fx-background-radius: 8; -fx-padding: 15;" >
+                            <VBox fx:id="panelDetalles" spacing="10.0" style="-fx-background-color: #F8FAFC; -fx-background-radius: 8; -fx-padding: 15;">
                                 <children>
-                                    <HBox>
+                                    <HBox alignment="CENTER_LEFT">
                                         <children>
-                                            <Label text="Email:" textFill="#757575" prefWidth="80.0" />
-                                            <Label text="john.doe@company.com" textFill="#212121" wrapText="true" />
+                                            <Label text="Id:" textFill="#757575" prefWidth="80.0" />
+                                            <!-- El ID no se debe editar porque es la llave primaria -->
+                                            <TextField fx:id="txtId" editable="false" prefWidth="150.0" style="-fx-background-color: #E2E8F0;" />
                                         </children>
                                     </HBox>
-                                    <HBox>
+                                    <HBox alignment="CENTER_LEFT">
                                         <children>
-                                            <Label text="Phone:" textFill="#757575" prefWidth="80.0" />
-                                            <Label text="+1 (555) 019-2834" textFill="#212121" />
+                                            <Label text="Name:" textFill="#757575" prefWidth="80.0" />
+                                            <TextField fx:id="txtName" prefWidth="150.0" />
                                         </children>
                                     </HBox>
-                                    <HBox>
+                                    <HBox alignment="CENTER_LEFT">
                                         <children>
-                                            <Label text="Joined:" textFill="#757575" prefWidth="80.0" />
-                                            <Label text="Sept 25, 2018" textFill="#212121" />
+                                            <Label text="Priority:" textFill="#757575" prefWidth="80.0" />
+                                            <TextField fx:id="txtPriority" prefWidth="150.0" />
                                         </children>
                                     </HBox>
-                                    <HBox>
+                                    <HBox alignment="CENTER_LEFT">
+                                        <children>
+                                            <Label text="Deadline:" textFill="#757575" prefWidth="80.0" />
+                                            <TextField fx:id="txtDeadline" prefWidth="150.0" />
+                                        </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER_LEFT">
                                         <children>
                                             <Label text="Status:" textFill="#757575" prefWidth="80.0" />
-                                            <Label text="Active / On Duty" textFill="#00AB33" style="-fx-font-weight: bold;" />
+                                            <!-- Un ComboBox es mejor para el estado para evitar errores de escritura -->
+                                            <ComboBox fx:id="cmbStatus" prefWidth="150.0" />
+                                        </children>
+                                    </HBox>
+
+                                    <!-- Botones de acción -->
+                                    <HBox spacing="10.0" style="-fx-padding: 10 0 0 0;">
+                                        <children>
+                                            <Button text="Limpiar" onAction="#limpiarSeleccion" style="-fx-background-color: #E2E8F0; -fx-text-fill: #475569; -fx-background-radius: 6;" />
+                                            <Button text="Guardar" onAction="#actualizarTarea" style="-fx-background-color: #2563EB; -fx-text-fill: white; -fx-background-radius: 6; -fx-font-weight: bold;" />
+                                            <Button text="Eliminar" onAction="#eliminarTarea" style="-fx-background-color: #EF4444; -fx-text-fill: white; -fx-background-radius: 6; -fx-font-weight: bold;" />
                                         </children>
                                     </HBox>
                                 </children>
                             </VBox>
+
+
 
                             <Pane VBox.vgrow="ALWAYS" />
 
                             <!-- Action buttons -->
                             <Button fx:id="editTableButton" onAction="#editWorkesTable" prefHeight="40.0" prefWidth="300.0"
                                     style="-fx-background-color: transparent; -fx-border-color: #BDBDBD; -fx-border-radius: 6; -fx-text-fill: #757575; -fx-font-weight: bold;"
-                                    text="Edit" />
+                                    text="Agregar Nueva" />
                             <Button fx:id="backButton" onAction="#logout" prefHeight="40.0" prefWidth="300.0"
                                     style="-fx-background-color: transparent; -fx-border-color: #BDBDBD; -fx-border-radius: 6; -fx-text-fill: #757575; -fx-font-weight: bold;"
                                     text="Logout" />

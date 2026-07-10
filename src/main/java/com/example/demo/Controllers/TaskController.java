@@ -13,11 +13,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -28,6 +26,20 @@ import java.sql.SQLException;
 
 
 public class TaskController {
+
+
+    // 1. Declarar los Labels del FXML
+    @FXML private Label lblId;
+    @FXML private Label lblName;
+    @FXML private Label lblPriority;
+    @FXML private Label lblDeadline;
+    @FXML private Label lblStatus;
+    @FXML private VBox panelDetalles;
+
+
+
+
+
 
     public Label tat;
     public Label ipt;
@@ -47,7 +59,15 @@ public class TaskController {
     @FXML private TableColumn<Task, String> categoria;  // Muestra deadline
     @FXML private TableColumn<Task, String> achivment;  // Muestra status
 
-   // private Connection con; // Tu objeto de conexión a la BD (Debe estar inicializado)
+    @FXML private TextField txtId;
+    @FXML private TextField txtName;
+    @FXML private TextField txtPriority;
+    @FXML private TextField txtDeadline;
+    @FXML private ComboBox<String> cmbStatus; // Cambiado a ComboBox
+    //@FXML private VBox panelDetalles;
+
+
+    // private Connection con; // Tu objeto de conexión a la BD (Debe estar inicializado)
     private ObservableList<Task> taskList = FXCollections.observableArrayList();
 
     /**
@@ -55,6 +75,9 @@ public class TaskController {
      */
     @FXML
     public void initialize() {
+
+        cmbStatus.setItems(FXCollections.observableArrayList("In Progress", "Completed"));
+
         // 2. Vincular las columnas de la vista con los atributos de la clase Task
         // Los strings del PropertyValueFactory deben coincidir con los nombres de variables en tu clase Task
         TaskId.setCellValueFactory(new PropertyValueFactory<>("taskId"));
@@ -62,6 +85,11 @@ public class TaskController {
         Experience.setCellValueFactory(new PropertyValueFactory<>("priority"));
         categoria.setCellValueFactory(new PropertyValueFactory<>("deadline"));
         achivment.setCellValueFactory(new PropertyValueFactory<>("status"));
+
+        // === AQUÍ SE CONECTA Y SE USA EL MÉTODO ===
+        tasksTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            mostrarDetallesTarea(newValue);
+        });
 
         // 3. Cargar los datos desde la base de datos
         cargarDatosDesdeBD();
@@ -188,4 +216,110 @@ public class TaskController {
         }
 
     }
+
+    @FXML
+    private void limpiarSeleccion() {
+        // 1. Quita la selección activa en la interfaz de la tabla
+        tasksTable.getSelectionModel().clearSelection();
+
+        // 2. Llama a tu método existente para que limpie los Labels de la izquierda
+        mostrarDetallesTarea(null);
+    }
+
+    @FXML
+    private void eliminarTarea() {
+        // Obtener el objeto seleccionado actualmente
+        Task tareaSeleccionada = tasksTable.getSelectionModel().getSelectedItem();
+
+        if (tareaSeleccionada == null) {
+            System.out.println("Por favor, selecciona una tarea de la tabla para eliminar.");
+            return;
+        }
+
+        // Consulta SQL para eliminar usando el ID
+        String sql = "DELETE FROM tasks WHERE task_id = ?;";
+
+        try (PreparedStatement pstmt = con.prepareStatement(sql)) {
+            pstmt.setInt(1, tareaSeleccionada.getTaskId());
+
+            int filasAfectadas = pstmt.executeUpdate();
+
+            if (filasAfectadas > 0) {
+                System.out.println("Tarea eliminada con éxito de la base de datos.");
+
+                // Refrescar los datos de la interfaz volviendo a leer la BD
+                cargarDatosDesdeBD();
+
+                // Limpiar los campos de la izquierda
+                limpiarSeleccion();
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al intentar eliminar la tarea: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    private void mostrarDetallesTarea(Task task) {
+        if (task != null) {
+            txtId.setText(String.valueOf(task.getTaskId()));
+            txtName.setText(task.getTaskName());
+            txtPriority.setText(task.getPriority());
+            txtDeadline.setText(task.getDeadline());
+            cmbStatus.setValue(task.getStatus()); // Asigna el valor en el ComboBox
+
+            // Cambio dinámico de color según prioridad (Tu lógica existente)
+            String prioridad = task.getPriority() != null ? task.getPriority().toLowerCase() : "";
+            if (prioridad.contains("high") || prioridad.contains("alta")) {
+                panelDetalles.setStyle("-fx-background-color: #FEE2E2; -fx-background-radius: 8; -fx-padding: 15;");
+            } else if (prioridad.contains("low") || prioridad.contains("baja")) {
+                panelDetalles.setStyle("-fx-background-color: #E0F2FE; -fx-background-radius: 8; -fx-padding: 15;");
+            } else {
+                panelDetalles.setStyle("-fx-background-color: #F8FAFC; -fx-background-radius: 8; -fx-padding: 15;");
+            }
+        } else {
+            // Limpiar los campos si no hay selección
+            txtId.setText("");
+            txtName.setText("");
+            txtPriority.setText("");
+            txtDeadline.setText("");
+            cmbStatus.setValue(null);
+            panelDetalles.setStyle("-fx-background-color: #F8FAFC; -fx-background-radius: 8; -fx-padding: 15;");
+        }
+    }
+    @FXML
+    private void actualizarTarea() {
+        // Verificar que haya una tarea seleccionada editándose (validando el campo ID)
+        if (txtId.getText().isEmpty()) {
+            System.out.println("Selecciona una tarea de la tabla antes de intentar actualizar.");
+            return;
+        }
+
+        // Consulta SQL para modificar los registros
+        String sql = "UPDATE tasks SET task_name = ?, priority = ?, deadline = ?, status = ? WHERE task_id = ?;";
+
+        try (PreparedStatement pstmt = con.prepareStatement(sql)) {
+            // Capturar los nuevos textos modificados por el usuario en la izquierda
+            pstmt.setString(1, txtName.getText());
+            pstmt.setString(2, txtPriority.getText());
+            pstmt.setString(3, txtDeadline.getText());
+            pstmt.setString(4, cmbStatus.getValue()); // Toma el valor del ComboBox
+            pstmt.setInt(5, Integer.parseInt(txtId.getText()));
+
+            int filasActualizadas = pstmt.executeUpdate();
+
+            if (filasActualizadas > 0) {
+                System.out.println("¡Tarea actualizada con éxito en la Base de Datos!");
+
+                // Recargar la tabla para mostrar los nuevos cambios y actualizar contadores
+                cargarDatosDesdeBD();
+
+                // Limpiar los campos
+                limpiarSeleccion();
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al intentar actualizar la tarea: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
 }

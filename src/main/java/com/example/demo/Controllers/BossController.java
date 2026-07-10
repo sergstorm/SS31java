@@ -80,7 +80,7 @@ public class BossController {
         // Get the current Stage from the button click event
         stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         // Update the existing scene with the new root layout
-        stage.getScene().getWindow().setHeight(800);
+        stage.getScene().getWindow().setHeight(850);
         stage.getScene().getWindow().setWidth(1200);
         stage.centerOnScreen();
         stage.getScene().setRoot(root);
