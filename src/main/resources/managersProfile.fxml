@@ -66,30 +66,48 @@
                             </Label>
 
                             <!-- Metadata Details Grid -->
-                            <VBox spacing="10.0" style="-fx-background-color: #F8FAFC; -fx-background-radius: 8; -fx-padding: 15;">
+                            <VBox fx:id="panelDetallesManager" spacing="10.0" style="-fx-background-color: #F8FAFC; -fx-background-radius: 8; -fx-padding: 15;">
                                 <children>
-                                    <HBox>
+                                    <Label text="Detalles del Mánager" textFill="#212121" style="-fx-font-weight: bold;" />
+
+                                    <HBox alignment="CENTER_LEFT">
                                         <children>
-                                            <Label text="Email:" textFill="#757575" prefWidth="85.0" />
-                                            <Label text="jane.smith@company.com" textFill="#212121" wrapText="true" />
+                                            <Label text="Manager ID:" textFill="#757575" prefWidth="100.0" />
+                                            <!-- ID no editable -->
+                                            <TextField fx:id="txtManagerId" editable="false" prefWidth="150.0" style="-fx-background-color: #E2E8F0;" />
                                         </children>
                                     </HBox>
-                                    <HBox>
+                                    <HBox alignment="CENTER_LEFT">
                                         <children>
-                                            <Label text="Department:" textFill="#757575" prefWidth="85.0" />
-                                            <Label text="UI/UX &amp; Development" textFill="#212121" />
+                                            <Label text="Department:" textFill="#757575" prefWidth="100.0" />
+                                            <TextField fx:id="txtDepartment" prefWidth="150.0" />
                                         </children>
                                     </HBox>
-                                    <HBox>
+                                    <HBox alignment="CENTER_LEFT">
                                         <children>
-                                            <Label text="Office Room:" textFill="#757575" prefWidth="85.0" />
-                                            <Label text="Suite 404-B" textFill="#212121" />
+                                            <Label text="Alias:" textFill="#757575" prefWidth="100.0" />
+                                            <TextField fx:id="txtAlias" prefWidth="150.0" />
                                         </children>
                                     </HBox>
-                                    <HBox>
+                                    <HBox alignment="CENTER_LEFT">
                                         <children>
-                                            <Label text="Team Count:" textFill="#757575" prefWidth="85.0" />
-                                            <Label text="14 Active Workers" textFill="#8E24AA" style="-fx-font-weight: bold;" />
+                                            <Label text="Achievement:" textFill="#757575" prefWidth="100.0" />
+                                            <TextField fx:id="txtAchievement" prefWidth="150.0" />
+                                        </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER_LEFT">
+                                        <children>
+                                            <Label text="Aim / Meta:" textFill="#757575" prefWidth="100.0" />
+                                            <TextField fx:id="txtAim" prefWidth="150.0" />
+                                        </children>
+                                    </HBox>
+
+                                    <!-- Botones de Acción para Mánagers -->
+                                    <HBox spacing="10.0" style="-fx-padding: 10 0 0 0;">
+                                        <children>
+                                            <Button fx:id="LbB" text="Limpiar" onAction="#limpiarSeleccionManager" style="-fx-background-color: #E2E8F0; -fx-text-fill: #475569; -fx-background-radius: 6;" />
+                                            <Button fx:id="GBB" text="Guardar" onAction="#actualizarManager" style="-fx-background-color: #2563EB; -fx-text-fill: white; -fx-background-radius: 6; -fx-font-weight: bold;" />
+                                            <Button fx:id="EBB" text="Eliminar" onAction="#eliminarManager" style="-fx-background-color: #EF4444; -fx-text-fill: white; -fx-background-radius: 6; -fx-font-weight: bold;" />
                                         </children>
                                     </HBox>
                                 </children>

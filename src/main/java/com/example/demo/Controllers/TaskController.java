@@ -28,6 +28,7 @@ import java.sql.SQLException;
 public class TaskController {
 
 
+
     // 1. Declarar los Labels del FXML
     @FXML private Label lblId;
     @FXML private Label lblName;
@@ -35,10 +36,6 @@ public class TaskController {
     @FXML private Label lblDeadline;
     @FXML private Label lblStatus;
     @FXML private VBox panelDetalles;
-
-
-
-
 
 
     public Label tat;
@@ -212,50 +209,67 @@ public class TaskController {
         else
         {
             System.out.println("Not Manager");
-
         }
 
     }
 
     @FXML
     private void limpiarSeleccion() {
-        // 1. Quita la selección activa en la interfaz de la tabla
-        tasksTable.getSelectionModel().clearSelection();
+        if (usuario2.getTipo().equals("manager"))
+        {
+            System.out.println("manager");
+            // 1. Quita la selección activa en la interfaz de la tabla
+            tasksTable.getSelectionModel().clearSelection();
+            // 2. Llama a tu método existente para que limpie los Labels de la izquierda
+            mostrarDetallesTarea(null);
+        }
+        else
+        {
+            System.out.println("Not Manager");
+        }
 
-        // 2. Llama a tu método existente para que limpie los Labels de la izquierda
-        mostrarDetallesTarea(null);
     }
 
     @FXML
     private void eliminarTarea() {
-        // Obtener el objeto seleccionado actualmente
-        Task tareaSeleccionada = tasksTable.getSelectionModel().getSelectedItem();
 
-        if (tareaSeleccionada == null) {
-            System.out.println("Por favor, selecciona una tarea de la tabla para eliminar.");
-            return;
-        }
+        if (usuario2.getTipo().equals("manager"))
+        {
+            System.out.println("manager");
 
-        // Consulta SQL para eliminar usando el ID
-        String sql = "DELETE FROM tasks WHERE task_id = ?;";
+            // Obtener el objeto seleccionado actualmente
+            Task tareaSeleccionada = tasksTable.getSelectionModel().getSelectedItem();
 
-        try (PreparedStatement pstmt = con.prepareStatement(sql)) {
-            pstmt.setInt(1, tareaSeleccionada.getTaskId());
-
-            int filasAfectadas = pstmt.executeUpdate();
-
-            if (filasAfectadas > 0) {
-                System.out.println("Tarea eliminada con éxito de la base de datos.");
-
-                // Refrescar los datos de la interfaz volviendo a leer la BD
-                cargarDatosDesdeBD();
-
-                // Limpiar los campos de la izquierda
-                limpiarSeleccion();
+            if (tareaSeleccionada == null) {
+                System.out.println("Por favor, selecciona una tarea de la tabla para eliminar.");
+                return;
             }
-        } catch (SQLException e) {
-            System.err.println("Error al intentar eliminar la tarea: " + e.getMessage());
-            e.printStackTrace();
+
+            // Consulta SQL para eliminar usando el ID
+            String sql = "DELETE FROM tasks WHERE task_id = ?;";
+
+            try (PreparedStatement pstmt = con.prepareStatement(sql)) {
+                pstmt.setInt(1, tareaSeleccionada.getTaskId());
+
+                int filasAfectadas = pstmt.executeUpdate();
+
+                if (filasAfectadas > 0) {
+                    System.out.println("Tarea eliminada con éxito de la base de datos.");
+
+                    // Refrescar los datos de la interfaz volviendo a leer la BD
+                    cargarDatosDesdeBD();
+
+                    // Limpiar los campos de la izquierda
+                    limpiarSeleccion();
+                }
+            } catch (SQLException e) {
+                System.err.println("Error al intentar eliminar la tarea: " + e.getMessage());
+                e.printStackTrace();
+            }
+          } else
+        {
+            System.out.println("Not Manager");
+
         }
     }
 
@@ -269,12 +283,14 @@ public class TaskController {
 
             // Cambio dinámico de color según prioridad (Tu lógica existente)
             String prioridad = task.getPriority() != null ? task.getPriority().toLowerCase() : "";
-            if (prioridad.contains("high") || prioridad.contains("alta")) {
-                panelDetalles.setStyle("-fx-background-color: #FEE2E2; -fx-background-radius: 8; -fx-padding: 15;");
-            } else if (prioridad.contains("low") || prioridad.contains("baja")) {
-                panelDetalles.setStyle("-fx-background-color: #E0F2FE; -fx-background-radius: 8; -fx-padding: 15;");
+            if (prioridad.contains("low")) {
+                panelDetalles.setStyle("-fx-background-color: #00FF00; -fx-background-radius: 8; -fx-padding: 15;");
+            } else if (prioridad.contains("medium")) {
+                panelDetalles.setStyle("-fx-background-color: #FFFFE0; -fx-background-radius: 8; -fx-padding: 15;");
+            } else if (prioridad.contains("high")) {
+                panelDetalles.setStyle("-fx-background-color: #FF7F7F; -fx-background-radius: 8; -fx-padding: 15;");
             } else {
-                panelDetalles.setStyle("-fx-background-color: #F8FAFC; -fx-background-radius: 8; -fx-padding: 15;");
+                panelDetalles.setStyle("-fx-background-color: #880808; -fx-background-radius: 8; -fx-padding: 15;");
             }
         } else {
             // Limpiar los campos si no hay selección
@@ -288,38 +304,47 @@ public class TaskController {
     }
     @FXML
     private void actualizarTarea() {
-        // Verificar que haya una tarea seleccionada editándose (validando el campo ID)
-        if (txtId.getText().isEmpty()) {
-            System.out.println("Selecciona una tarea de la tabla antes de intentar actualizar.");
-            return;
-        }
 
-        // Consulta SQL para modificar los registros
-        String sql = "UPDATE tasks SET task_name = ?, priority = ?, deadline = ?, status = ? WHERE task_id = ?;";
-
-        try (PreparedStatement pstmt = con.prepareStatement(sql)) {
-            // Capturar los nuevos textos modificados por el usuario en la izquierda
-            pstmt.setString(1, txtName.getText());
-            pstmt.setString(2, txtPriority.getText());
-            pstmt.setString(3, txtDeadline.getText());
-            pstmt.setString(4, cmbStatus.getValue()); // Toma el valor del ComboBox
-            pstmt.setInt(5, Integer.parseInt(txtId.getText()));
-
-            int filasActualizadas = pstmt.executeUpdate();
-
-            if (filasActualizadas > 0) {
-                System.out.println("¡Tarea actualizada con éxito en la Base de Datos!");
-
-                // Recargar la tabla para mostrar los nuevos cambios y actualizar contadores
-                cargarDatosDesdeBD();
-
-                // Limpiar los campos
-                limpiarSeleccion();
+        if (usuario2.getTipo().equals("manager")) {
+            System.out.println("manager");
+            // 1. Quita la selección activa en la interfaz de la tabla
+            tasksTable.getSelectionModel().clearSelection();
+            // 2. Llama a tu método existente para que limpie los Labels de la izquierda
+            mostrarDetallesTarea(null);
+            // Verificar que haya una tarea seleccionada editándose (validando el campo ID)
+            if (txtId.getText().isEmpty()) {
+                System.out.println("Selecciona una tarea de la tabla antes de intentar actualizar.");
+                return;
             }
-        } catch (SQLException e) {
-            System.err.println("Error al intentar actualizar la tarea: " + e.getMessage());
-            e.printStackTrace();
+
+            // Consulta SQL para modificar los registros
+            String sql = "UPDATE tasks SET task_name = ?, priority = ?, deadline = ?, status = ? WHERE task_id = ?;";
+
+            try (PreparedStatement pstmt = con.prepareStatement(sql)) {
+                // Capturar los nuevos textos modificados por el usuario en la izquierda
+                pstmt.setString(1, txtName.getText());
+                pstmt.setString(2, txtPriority.getText());
+                pstmt.setString(3, txtDeadline.getText());
+                pstmt.setString(4, cmbStatus.getValue()); // Toma el valor del ComboBox
+                pstmt.setInt(5, Integer.parseInt(txtId.getText()));
+
+                int filasActualizadas = pstmt.executeUpdate();
+
+                if (filasActualizadas > 0) {
+                    System.out.println("¡Tarea actualizada con éxito en la Base de Datos!");
+
+                    // Recargar la tabla para mostrar los nuevos cambios y actualizar contadores
+                    cargarDatosDesdeBD();
+
+                    // Limpiar los campos
+                    limpiarSeleccion();
+                }
+            } catch (SQLException e) {
+                System.err.println("Error al intentar actualizar la tarea: " + e.getMessage());
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println("Not Manager");
         }
     }
-
 }

@@ -47,48 +47,23 @@ public class RegLoginAuthController extends Usuario
 
     @FXML
     public void switchToView1(ActionEvent event) throws IOException {
-        // Load the FXML file for view 1
         root = FXMLLoader.load(getClass().getResource("/reg.fxml"));
-        //root = FXMLLoader.load(getClass().getResource("com/example/demo1/reg.fxml"));
-       // root = FXMLLoader.load(getClass().getResource("/com/example/demo/reg.fxml"));
-
-        // Option A: If view2.fxml is in src/main/resources/com/example/demo/
-
-        // Use a forward slash relative to your resources folder, NOT a C:\ drive path
         URL fxmlLocation = getClass().getResource("/reg.fxml");
-
-        System.out.println(fxmlLocation + "  lockjdsb  ");
-
+        System.out.println(fxmlLocation + "  reg.fxml  ");
         if (fxmlLocation == null) {
             throw new RuntimeException("Error: Could not find reg.fxml in the target folder!");
         }
-
         Parent root = FXMLLoader.load(fxmlLocation);
-
-// Option B: If view2.fxml is in the exact same folder structure as the controller
-       // URL fxmlLocation = getClass().getResource("view2.fxml");
-       // Parent root = FXMLLoader.load(fxmlLocation);
-
-
-        // Get the current Stage from the button click event
         stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        // Update the existing scene with the new root layout
         stage.getScene().setRoot(root);
     }
 
     @FXML
     public void switchToView2(ActionEvent event) throws IOException {
-        // Load the FXML file for view 2
-       // root = FXMLLoader.load(getClass().getResource("login.fxml"));
-        // Get the current Stage from the button click event
-
         URL fxmlLocation = getClass().getResource("/login.fxml");
         System.out.println(fxmlLocation+"  lockjdsb  ");
         Parent root = FXMLLoader.load(fxmlLocation);
-
-
         stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        // Update the existing scene with the new root layout
         stage.getScene().setRoot(root);
     }
 
@@ -132,10 +107,6 @@ public class RegLoginAuthController extends Usuario
         stage.centerOnScreen();
         stage.getScene().setRoot(root);
     }
-
-    // Nota: Importa la clase BossController desde su paquete original
-
-
 
     public  <T> Usuario login(ActionEvent actionEvent)
     {
@@ -192,19 +163,10 @@ public class RegLoginAuthController extends Usuario
           catch (SQLException | IOException e) {
               throw new RuntimeException(e);
           }
-        //System.out.println(" usuario id "+usuario.getId());
-        // 1. Tu código actual donde creas al usuario (ejemplo)
-       // Usuario nuevoUsuario = new Usuario(15, "q", "q", "q", "boss");
-
-        // 2. GUARDAR EN LA SESIÓN GLOBAL
         UserSession.getInstance().setUsuario(usuario);
-
-        // 3. Abrir la siguiente ventana normalmente (ya no necesitas usar loader.getController)
         System.out.println("Usuario guardado en la sesión global correctament");
         return usuario;
    }
-
-
 
 
     public void handleReg(ActionEvent actionEvent)
@@ -225,19 +187,10 @@ public class RegLoginAuthController extends Usuario
             String sql = "INSERT INTO usuario (name, email, password, tipo_usuario) VALUES (?, ?, ?, ?)";
             PreparedStatement statement = con.prepareStatement(sql);
 
-// 2. Asignar los valores a cada parámetro (los índices coinciden con los 4 '?')
             statement.setString(1, a);             // Se mapea a 'name'
             statement.setString(2, b);             // Se mapea a 'email'
             statement.setString(3, c);             // Se mapea a 'password'
             statement.setString(4, d);      // Se mapea a 'tipo_usuario'
-
-// 3. Ejecutar la inserción
-          //  int filasInsertadas = statement.executeUpdate();
-
-
-            // 3. Ejecutar la inserción en la base de datos
-            // int filasInsertadas = statement.executeUpdate();
-
 
             int filas = statement.executeUpdate();
             if (filas > 0){

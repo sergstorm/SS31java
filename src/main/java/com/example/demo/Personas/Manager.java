@@ -1,36 +1,84 @@
 package com.example.demo.Personas;
 
+ // Cambia esto por el nombre real de tu paquete
 
 public class Manager {
+
+    // Atributos privados (deben coincidir con el PropertyValueFactory)
     private int managerId;
-    private String department;
+    private String departmentName;
     private String alias;
-    private String achievement;
+    private String currentAchievement;
     private String aim;
 
-    // Constructor completo
-    public Manager(int managerId, String department, String alias, String achievement, String aim) {
+    // Constructor completo para instanciar desde la base de datos
+    public Manager(int managerId, String departmentName, String alias, String currentAchievement, String aim) {
         this.managerId = managerId;
-        this.department = department;
+        this.departmentName = departmentName;
         this.alias = alias;
-        this.achievement = achievement;
+        this.currentAchievement = currentAchievement;
         this.aim = aim;
     }
 
-    // GETTERS Y SETTERS (Esenciales para PropertyValueFactory)
-    public int getManagerId() { return managerId; }
-    public void setManagerId(int managerId) { this.managerId = managerId; }
+    // Constructor vacío (opcional, útil para frameworks o inicializaciones vacías)
+    public Manager() {
+    }
 
-    public String getDepartment() { return department; }
-    public void setDepartment(String department) { this.department = department; }
+    // ==========================================
+    // GETTERS Y SETTERS (Indispensables para JavaFX)
+    // ==========================================
 
-    public String getAlias() { return alias; }
-    public void setAlias(String alias) { this.alias = alias; }
+    public int getManagerId() {
+        return managerId;
+    }
 
-    public String getAchievement() { return achievement; }
-    public void setAchievement(String achievement) { this.achievement = achievement; }
+    public void setManagerId(int managerId) {
+        this.managerId = managerId;
+    }
 
-    public String getAim() { return aim; }
-    public void setAim(String aim) { this.aim = aim; }
+    public String getDepartmentName() {
+        return departmentName;
+    }
+
+    public void setDepartmentName(String departmentName) {
+        this.departmentName = departmentName;
+    }
+
+    public String getAlias() {
+        return alias;
+    }
+
+    public void setAlias(String alias) {
+        this.alias = alias;
+    }
+
+    public String getCurrentAchievement() {
+        return currentAchievement;
+    }
+
+    public void setCurrentAchievement(String currentAchievement) {
+        this.currentAchievement = currentAchievement;
+    }
+
+    public String getAim() {
+        return aim;
+    }
+
+    public void setAim(String aim) {
+        this.aim = aim;
+    }
+
+    // Método toString() opcional para depuración en consola
+    @Override
+    public String toString() {
+        return "Manager{" +
+                "managerId=" + managerId +
+                ", departmentName='" + departmentName + '\'' +
+                ", alias='" + alias + '\'' +
+                ", currentAchievement='" + currentAchievement + '\'' +
+                ", aim='" + aim + '\'' +
+                '}';
+    }
 }
+
 

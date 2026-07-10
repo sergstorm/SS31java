@@ -6,7 +6,8 @@ module com.example.demo {
     requires java.sql;
     requires javafx.graphics;
     requires javafx.base;
-   // requires com.example.demo;
+    //requires com.example.demo;
+    // requires com.example.demo;
     // requires com.example.demo;
     // requires com.example.demo;
     // requires com.example.demo;
