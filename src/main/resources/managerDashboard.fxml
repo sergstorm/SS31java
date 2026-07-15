@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox alignment="TOP_CENTER" prefHeight="750.0" prefWidth="950.0" spacing="20.0" style="-fx-background-color: #F5F5F5;"
+      xmlns="http://javafx.com" xmlns:fx="http://javafx.com" fx:controller="com.example.demo.Controllers.WorkerController">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    </padding>
+    <children>
+
+        <!-- Encabezado con tu Label original -->
+        <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="200.0">
+            <children>
+                <Label fx:id="nameUserMt" text="Managers Name" textFill="#212121">
+                    <font>
+                        <Font name="System Bold" size="26.0" />
+                    </font>
+                </Label>
+            </children>
+        </HBox>
+
+        <!-- Contenedor de las dos tablas superiores en paralelo -->
+        <HBox spacing="15.0" prefHeight="280.0" VBox.vgrow="ALWAYS">
+            <children>
+
+                <!-- Tabla de Trabajadores (Workers) -->
+                <VBox spacing="5.0" HBox.hgrow="ALWAYS">
+                    <children>
+                        <Label text="Workers Disponibles" textFill="#424242">
+                            <font>
+                                <Font name="System Bold" size="14.0" />
+                            </font>
+                        </Label>
+                        <TableView fx:id="tableWorkers" VBox.vgrow="ALWAYS">
+                            <columns>
+                                <TableColumn fx:id="colWorkerId" prefWidth="60.0" text="ID" />
+                                <TableColumn fx:id="colWorkerName" prefWidth="150.0" text="Nombre" />
+                                <TableColumn fx:id="colWorkerEmail" prefWidth="180.0" text="Email" />
+                            </columns>
+                        </TableView>
+                    </children>
+                </VBox>
+
+                <!-- Tabla de Tareas (Tasks) -->
+                <VBox spacing="5.0" HBox.hgrow="ALWAYS">
+                    <children>
+                        <Label text="Tareas Activas" textFill="#424242">
+                            <font>
+                                <Font name="System Bold" size="14.0" />
+                            </font>
+                        </Label>
+                        <TableView fx:id="tableTasks" VBox.vgrow="ALWAYS">
+                            <columns>
+                                <TableColumn fx:id="colTaskId" prefWidth="60.0" text="ID" />
+                                <TableColumn fx:id="colTaskName" prefWidth="150.0" text="Tarea" />
+                                <TableColumn fx:id="colTaskPriority" prefWidth="90.0" text="Prioridad" />
+                                <TableColumn fx:id="colTaskDeadline" prefWidth="100.0" text="Fecha Límite" />
+                                <TableColumn fx:id="colTaskStatus" prefWidth="90.0" text="Estado" />
+                            </columns>
+                        </TableView>
+                    </children>
+                </VBox>
+
+            </children>
+        </HBox>
+
+        <!-- NUEVA SECCIÓN: Tabla de Inscripciones (Ocupa el ancho completo abajo) -->
+        <VBox spacing="5.0" prefHeight="220.0" VBox.vgrow="ALWAYS">
+            <children>
+                <Label text="Inscripciones Activas (Asignaciones)" textFill="#424242">
+                    <font>
+                        <Font name="System Bold" size="14.0" />
+                    </font>
+                </Label>
+                <TableView fx:id="tableInscripciones" VBox.vgrow="ALWAYS">
+                    <columns>
+                        <TableColumn fx:id="colInscripcionId" prefWidth="100.0" text="Inscripción ID" />
+                        <TableColumn fx:id="colInscripcionWorker" prefWidth="250.0" text="Trabajador" />
+                        <TableColumn fx:id="colInscripcionTask" prefWidth="250.0" text="Tarea Asignada" />
+                        <TableColumn fx:id="colInscripcionDate" prefWidth="150.0" text="Fecha Inscripción" />
+                    </columns>
+                </TableView>
+            </children>
+        </VBox>
+
+        <!-- Botón de Acción Inferior -->
+        <HBox alignment="CENTER" prefHeight="60.0" prefWidth="600.0" spacing="15.0">
+            <children>
+                <!-- Botón Asignar -->
+                <Button fx:id="btnSubscribe" mnemonicParsing="false" onAction="#handleSubscribeWorker" style="-fx-background-color: #2196F3; -fx-text-fill: white; -fx-cursor: hand;" text="Asignar Worker a Tarea">
+                    <font>
+                        <Font name="System Bold" size="16.0" />
+                    </font>
+                    <padding>
+                        <Insets bottom="10.0" left="25.0" right="25.0" top="10.0" />
+                    </padding>
+                </Button>
+
+                <!-- Botón Cancelar -->
+                <Button fx:id="btnCancel" mnemonicParsing="false" onAction="#handleUnsubscribeWorker" style="-fx-background-color: #E0E0E0; -fx-text-fill: #333333; -fx-cursor: hand;" text="Cancelar">
+                    <font>
+                        <Font name="System Bold" size="16.0" />
+                    </font>
+                    <padding>
+                        <Insets bottom="10.0" left="25.0" right="25.0" top="10.0" />
+                    </padding>
+                </Button>
+
+                <!-- Botón Volver -->
+                <Button fx:id="btnGoBack" mnemonicParsing="false" onAction="#handleGoBack" style="-fx-background-color: #757575; -fx-text-fill: white; -fx-cursor: hand;" text="Volver">
+                    <font>
+                        <Font name="System Bold" size="16.0" />
+                    </font>
+                    <padding>
+                        <Insets bottom="10.0" left="25.0" right="25.0" top="10.0" />
+                    </padding>
+                </Button>
+            </children>
+        </HBox>
+
+    </children>
+</VBox>

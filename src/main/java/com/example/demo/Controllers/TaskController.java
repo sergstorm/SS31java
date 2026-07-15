@@ -23,12 +23,15 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.Objects;
 
 
 public class TaskController {
 
 
-
+    public Button subscribeButton;
+    public Button btnSubscribe;
     // 1. Declarar los Labels del FXML
     @FXML private Label lblId;
     @FXML private Label lblName;
@@ -67,79 +70,96 @@ public class TaskController {
     // private Connection con; // Tu objeto de conexión a la BD (Debe estar inicializado)
     private ObservableList<Task> taskList = FXCollections.observableArrayList();
 
+    @FXML private TableView<Usuario> tableWorkers; // Tu clase modelo Usuario
+    @FXML private TableView<Task> tableTasks;       // Tu clase modelo Task
+
+    @FXML
+    void handleSubscribeWorker(ActionEvent event) {
+        Usuario selectedWorker = tableWorkers.getSelectionModel().getSelectedItem();
+        Task selectedTask = tableTasks.getSelectionModel().getSelectedItem();
+
+        if (selectedWorker != null && selectedTask != null) {
+            int idUsuario = selectedWorker.getUsuarioId();
+            int idTarea = selectedTask.getId();
+
+            // Aquí ejecutas tu INSERT INTO inscripcion (usuario_id, task_id) VALUES (?, ?)
+            System.out.println("Inscribiendo usuario " + idUsuario + " en tarea " + idTarea);
+        } else {
+            // Mostrar alerta: Selecciona un trabajador y una tarea
+        }
+    }
+
+
     /**
      * El método initialize() se ejecuta automáticamente al cargar la vista FXML.
      */
     @FXML
     public void initialize() {
-
+        // 1. Configurar los estados disponibles en el ComboBox
         cmbStatus.setItems(FXCollections.observableArrayList("In Progress", "Completed"));
 
         // 2. Vincular las columnas de la vista con los atributos de la clase Task
-        // Los strings del PropertyValueFactory deben coincidir con los nombres de variables en tu clase Task
-        TaskId.setCellValueFactory(new PropertyValueFactory<>("taskId"));
-        speciality.setCellValueFactory(new PropertyValueFactory<>("taskName"));
+        TaskId.setCellValueFactory(new PropertyValueFactory<>("id"));
+        speciality.setCellValueFactory(new PropertyValueFactory<>("name"));
         Experience.setCellValueFactory(new PropertyValueFactory<>("priority"));
         categoria.setCellValueFactory(new PropertyValueFactory<>("deadline"));
         achivment.setCellValueFactory(new PropertyValueFactory<>("status"));
 
-        // === AQUÍ SE CONECTA Y SE USA EL MÉTODO ===
+        // === SOLUCIÓN: Vincular la lista observable a la tabla ===
+        // Sin esta línea, los datos se cargan en segundo plano pero nunca se muestran en la pantalla
+        tasksTable.setItems(taskList);
+
+        // 3. Listener para detectar clics en la tabla y mostrar los detalles
         tasksTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             mostrarDetallesTarea(newValue);
         });
 
-        // 3. Cargar los datos desde la base de datos
+        // 4. Cargar los datos desde la base de datos
         cargarDatosDesdeBD();
     }
 
-    private void cargarDatosDesdeBD() {
-        taskList.clear(); // Limpiar la lista antes de volver a llenarla
 
-        // Asegurar que la columna de ID se incluya en el SELECT
-        String sql = "SELECT task_id, task_name, priority, deadline, status FROM tasks;";
 
-        try (PreparedStatement pstmt = con.prepareStatement(sql);
-             ResultSet rs = pstmt.executeQuery()) {
+    public void cargarDatosDesdeBD() {
+        if (con == null) {
+            System.err.println("Error: La conexión a la base de datos no está activa.");
+            return;
+        }
 
-            // Recorrer las filas que arrojó la base de datos
+        taskList.clear(); // Limpia la lista previa
+
+        // CORRECCIÓN: Agregamos explícitamente ', description' aquí
+        String queryTasks = "SELECT task_id, task_name, priority, status, description, deadline FROM tasks;";
+
+        try (PreparedStatement stmt = con.prepareStatement(queryTasks);
+             ResultSet rs = stmt.executeQuery()) {
+
             while (rs.next()) {
-                Task task = new Task(
+                java.sql.Date dbDate = rs.getDate("deadline");
+                LocalDate deadline = (dbDate != null) ? dbDate.toLocalDate() : null;
+
+                // Ahora sí encuentra la columna porque la pedimos en el SELECT de arriba
+                String desc = rs.getString("description");
+                if (desc == null) desc = "";
+
+                // Pasamos los 6 parámetros en el orden exacto de tu clase Task
+                taskList.add(new Task(
                         rs.getInt("task_id"),
                         rs.getString("task_name"),
                         rs.getString("priority"),
-                        rs.getString("deadline"),
-                        rs.getString("status")
-                );
-                // Agregar el objeto mapeado a la lista observable
-                taskList.add(task);
+                        rs.getString("status"),
+                        desc,
+                        deadline
+                ));
             }
-
-            // 4. Asignar la lista completa al TableView
-            tasksTable.setItems(taskList);
-            int a = taskList.size();
-            tat.setText(String.valueOf(a));
-            // Suponiendo que 'taskList' es tu ObservableList<Task> con las tareas de la base de datos
-            long tareasCompletadas = taskList.stream()
-                    .filter(task -> "Completed".equalsIgnoreCase(task.getStatus()))
-                    .count();
-
-            System.out.println("Número de tareas completadas: " + tareasCompletadas);
-
-            ct.setText(String.valueOf(tareasCompletadas));
-            System.out.println("Se cargaron exitosamente " + taskList.size() + " tareas en la tabla.");
-
-            long tareasEnProgreso = taskList.stream()
-                    .filter(task -> "In Progress".equalsIgnoreCase(task.getStatus()))
-                    .count();
-
-            System.out.println("Número de tareas en progreso: " + tareasEnProgreso);
-            ipt.setText(String.valueOf(tareasEnProgreso));
+            System.out.println("¡Tabla de tareas cargada con éxito en TaskController!");
 
         } catch (SQLException e) {
             System.err.println("Error al intentar leer la tabla 'tasks': " + e.getMessage());
             e.printStackTrace();
         }
     }
+
     @FXML
     public void switchToViewEditWorkersTable(ActionEvent event) throws IOException {
         // Load the FXML file for view 2
@@ -170,6 +190,19 @@ public class TaskController {
     public void switchToView11(ActionEvent event) throws IOException {
         // Load the FXML file for view 2
         root = FXMLLoader.load(getClass().getResource("/landingManager.fxml"));
+        // Get the current Stage from the button click event
+        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        // Update the existing scene with the new root layout
+        stage.getScene().getWindow().setHeight(800);
+        stage.getScene().getWindow().setWidth(1200);
+        stage.centerOnScreen();
+        stage.getScene().setRoot(root);
+    }
+    @FXML
+    public void switchSbsribeTable(ActionEvent event) throws IOException {
+        // Load the FXML file for view 2
+        System.out.println("OK+OK");
+        root = FXMLLoader.load(getClass().getResource("/managerDashboard.fxml"));
         // Get the current Stage from the button click event
         stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         // Update the existing scene with the new root layout
@@ -249,7 +282,7 @@ public class TaskController {
             String sql = "DELETE FROM tasks WHERE task_id = ?;";
 
             try (PreparedStatement pstmt = con.prepareStatement(sql)) {
-                pstmt.setInt(1, tareaSeleccionada.getTaskId());
+                pstmt.setInt(1, tareaSeleccionada.getId());
 
                 int filasAfectadas = pstmt.executeUpdate();
 
@@ -275,11 +308,24 @@ public class TaskController {
 
     private void mostrarDetallesTarea(Task task) {
         if (task != null) {
-            txtId.setText(String.valueOf(task.getTaskId()));
-            txtName.setText(task.getTaskName());
+            txtId.setText(String.valueOf(task.getId()));
+            txtName.setText(task.getName());
             txtPriority.setText(task.getPriority());
-            txtDeadline.setText(task.getDeadline());
             cmbStatus.setValue(task.getStatus()); // Asigna el valor en el ComboBox
+
+            // --- MANEJO SEGURO DE LA FECHA LÍMITE (DEADLINE) ---
+            // Opción 1: Si sigues usando un TextField (txtDeadline)
+            if (task.getDeadline() != null) {
+                txtDeadline.setText(task.getDeadline().toString());
+            } else {
+                txtDeadline.setText(""); // Deja el campo vacío si la fecha es nula en la BD
+            }
+
+        /*
+        // Opción 2: Si cambias tu interfaz a un DatePicker (dpDeadline), usa esto en su lugar:
+        dpDeadline.setValue(task.getDeadline()); // JavaFX DatePicker acepta LocalDate directamente (incluso si es null)
+        */
+            // ----------------------------------------------------
 
             // Cambio dinámico de color según prioridad (Tu lógica existente)
             String prioridad = task.getPriority() != null ? task.getPriority().toLowerCase() : "";
@@ -293,58 +339,113 @@ public class TaskController {
                 panelDetalles.setStyle("-fx-background-color: #880808; -fx-background-radius: 8; -fx-padding: 15;");
             }
         } else {
-            // Limpiar los campos si no hay selección
+            // Limpiar los campos si no hay selección o si se pasa un objeto null
             txtId.setText("");
             txtName.setText("");
             txtPriority.setText("");
-            txtDeadline.setText("");
+
+            txtDeadline.setText(""); // Si usas DatePicker cambia esto por: dpDeadline.setValue(null);
+
             cmbStatus.setValue(null);
             panelDetalles.setStyle("-fx-background-color: #F8FAFC; -fx-background-radius: 8; -fx-padding: 15;");
         }
     }
+
     @FXML
     private void actualizarTarea() {
+        // 1. Validar rol de usuario primero
+        if (!usuario2.getTipo().equals("manager")) {
+            System.out.println("No eres Manager. No tienes permisos para actualizar tareas.");
+            return;
+        }
 
-        if (usuario2.getTipo().equals("manager")) {
-            System.out.println("manager");
-            // 1. Quita la selección activa en la interfaz de la tabla
-            tasksTable.getSelectionModel().clearSelection();
-            // 2. Llama a tu método existente para que limpie los Labels de la izquierda
-            mostrarDetallesTarea(null);
-            // Verificar que haya una tarea seleccionada editándose (validando el campo ID)
-            if (txtId.getText().isEmpty()) {
-                System.out.println("Selecciona una tarea de la tabla antes de intentar actualizar.");
-                return;
-            }
+        System.out.println("Rol verificado: manager");
 
-            // Consulta SQL para modificar los registros
-            String sql = "UPDATE tasks SET task_name = ?, priority = ?, deadline = ?, status = ? WHERE task_id = ?;";
+        // 2. Verificar que haya un ID válido seleccionado antes de limpiar nada
+        if (txtId.getText() == null || txtId.getText().trim().isEmpty()) {
+            System.out.println("Selecciona una tarea de la tabla antes de intentar actualizar.");
+            return;
+        }
 
-            try (PreparedStatement pstmt = con.prepareStatement(sql)) {
-                // Capturar los nuevos textos modificados por el usuario en la izquierda
-                pstmt.setString(1, txtName.getText());
-                pstmt.setString(2, txtPriority.getText());
-                pstmt.setString(3, txtDeadline.getText());
-                pstmt.setString(4, cmbStatus.getValue()); // Toma el valor del ComboBox
-                pstmt.setInt(5, Integer.parseInt(txtId.getText()));
+        // Consulta SQL para modificar los registros
+        String sql = "UPDATE tasks SET task_name = ?, priority = ?, deadline = ?, status = ? WHERE task_id = ?;";
 
-                int filasActualizadas = pstmt.executeUpdate();
+        try (PreparedStatement pstmt = con.prepareStatement(sql)) {
+            pstmt.setString(1, txtName.getText());
+            pstmt.setString(2, txtPriority.getText());
 
-                if (filasActualizadas > 0) {
-                    System.out.println("¡Tarea actualizada con éxito en la Base de Datos!");
+            // 3. Manejo seguro de la fecha límite (Deadline)
+            // Opción Recomendada: Si usas DatePicker (cambiar el tipo de dpDeadline en tu controlador)
+            if (txtDeadline != null) {
+               // pstmt.setDate(3, java.sql.Date.valueOf(String.valueOf(txtDeadline)));
+                // Convierte LocalDate a java.sql.Date
+                String textoFecha = txtDeadline.getText(); // Extrae el contenido real del campo de texto
 
-                    // Recargar la tabla para mostrar los nuevos cambios y actualizar contadores
-                    cargarDatosDesdeBD();
-
-                    // Limpiar los campos
-                    limpiarSeleccion();
+                if (textoFecha != null && !textoFecha.trim().isEmpty()) {
+                    try {
+                        // Convierte el texto "AAAA-MM-DD" a un objeto LocalDate nativo
+                        java.time.LocalDate localDate = java.time.LocalDate.parse(textoFecha.trim());
+                        pstmt.setDate(3, java.sql.Date.valueOf(localDate));
+                    } catch (java.time.format.DateTimeParseException e) {
+                        System.err.println("Error: El formato de fecha ingresado no es válido. Debe ser AAAA-MM-DD.");
+                        return; // Detiene la actualización para evitar que la aplicación falle
+                    }
+                } else {
+                    // Si el usuario borró la fecha, guarda NULL en la base de datos de manera limpia
+                    pstmt.setNull(3, java.sql.Types.DATE);
                 }
-            } catch (SQLException e) {
-                System.err.println("Error al intentar actualizar la tarea: " + e.getMessage());
-                e.printStackTrace();
+
+            } else {
+                pstmt.setNull(3, java.sql.Types.DATE); // Permite guardar la fecha como NULL si está vacía
             }
-        } else {
-            System.out.println("Not Manager");
+
+            // Reemplaza el bloque de código de la fecha por este control seguro:
+            String textoFecha = txtDeadline.getText();
+            if (textoFecha != null && !textoFecha.trim().isEmpty()) {
+                try {
+                    // Valida y parsea el texto a un formato LocalDate correcto
+                    java.time.LocalDate localDate = java.time.LocalDate.parse(textoFecha.trim());
+                    pstmt.setDate(3, java.sql.Date.valueOf(localDate));
+                } catch (java.time.format.DateTimeParseException e) {
+                    System.err.println("Error: El formato de fecha debe ser AAAA-MM-DD (Ej: 2026-07-15)");
+                    return; // Detiene la ejecución para que no lance la excepción pesada
+                }
+            } else {
+                // Si el campo está vacío, guarda un valor NULL en la base de datos de manera segura
+                pstmt.setNull(3, java.sql.Types.DATE);
+            }
+
+            pstmt.setString(4, cmbStatus.getValue()); // Toma el valor del ComboBox
+            pstmt.setInt(5, Integer.parseInt(txtId.getText().trim()));
+
+            int filasActualizadas = pstmt.executeUpdate();
+
+            if (filasActualizadas > 0) {
+                System.out.println("¡Tarea actualizada con éxito en la Base de Datos!");
+
+                // 4. Limpieza y refresco visual tras el éxito
+                tasksTable.getSelectionModel().clearSelection();
+                mostrarDetallesTarea(null);
+
+                // Recargar la tabla para mostrar los nuevos cambios y actualizar contadores
+                cargarDatosDesdeBD();
+
+                // Limpiar los campos del formulario
+                limpiarSeleccion();
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al intentar actualizar la tarea: " + e.getMessage());
+            e.printStackTrace();
         }
     }
+
+
+    public void subsc(ActionEvent actionEvent) throws IOException {
+        System.out.println(usuario2.getTipo()+"usuarioa 2");
+       // if (usuario2.getTipo().equals("manager"))
+        switchSbsribeTable(actionEvent);
+       // else subscribeButton.setDisable(true);
+    }
+
+
 }

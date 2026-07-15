@@ -74,7 +74,7 @@ public class EditTaskController
             String c = statusCombo.getValue();
 
             System.out.println("Edit worker table" + a + b + time + c);
-            Task task = new Task(1, a, b, "deadline", c);
+           // Task task = new Task(1, a, b, deadlinePicker.getValue(), c);
 
             try {
                 // 1. Preparar la sentencia SQL con los marcadores de posición (?)

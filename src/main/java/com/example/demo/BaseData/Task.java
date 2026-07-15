@@ -1,36 +1,49 @@
 package com.example.demo.BaseData;
- // Ajusta el paquete según tu proyecto
+
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
+import java.time.LocalDate;
 
 public class Task {
-    private int taskId;
-    private String taskName;
-    private String priority;
-    private String deadline;
-    private String status;
+    private final SimpleIntegerProperty id;
+    private final SimpleStringProperty name;
+    private final SimpleStringProperty priority;
+    private final SimpleObjectProperty<LocalDate> deadline;
+    private final SimpleStringProperty status;
+    private final String description;
 
-    // Constructor completo
-    public Task(int taskId, String taskName, String priority, String deadline, String status) {
-        this.taskId = taskId;
-        this.taskName = taskName;
-        this.priority = priority;
-        this.deadline = deadline;
-        this.status = status;
+    // CONSTRUCTOR PRINCIPAL: Ideal para usar desde la Base de Datos
+    public Task(int id, String name, String priority, String status, String description, LocalDate deadline) {
+        this.id = new SimpleIntegerProperty(id);
+        this.name = new SimpleStringProperty(name);
+        this.priority = new SimpleStringProperty(priority);
+        this.status = new SimpleStringProperty(status);
+        this.description = description != null ? description : "";
+        this.deadline = new SimpleObjectProperty<>(deadline); // Guarda la fecha real
     }
 
-    // GETTERS Y SETTERS (Esenciales para JavaFX)
-    public int getTaskId() { return taskId; }
-    public void setTaskId(int taskId) { this.taskId = taskId; }
+    // GETTERS Y PROPIEDADES (Para JavaFX TableView)
+    public int getId() { return id.get(); }
+    public SimpleIntegerProperty idProperty() { return id; }
 
-    public String getTaskName() { return taskName; }
-    public void setTaskName(String taskName) { this.taskName = taskName; }
+    // Alias para evitar el warning anterior de la tabla
+    public int getTaskId() { return id.get(); }
 
-    public String getPriority() { return priority; }
-    public void setPriority(String priority) { this.priority = priority; }
+    public String getName() { return name.get(); }
+    public SimpleStringProperty nameProperty() { return name; }
 
-    public String getDeadline() { return deadline; }
-    public void setDeadline(String deadline) { this.deadline = deadline; }
+    // Alias para evitar el warning anterior de la tabla
+    public String getTaskName() { return name.get(); }
 
-    public String getStatus() { return status; }
-    public void setStatus(String status) { this.status = status; }
+    public String getPriority() { return priority.get(); }
+    public SimpleStringProperty priorityProperty() { return priority; }
+
+    public LocalDate getDeadline() { return deadline.get(); }
+    public SimpleObjectProperty<LocalDate> deadlineProperty() { return deadline; }
+
+    public String getStatus() { return status.get(); }
+    public SimpleStringProperty statusProperty() { return status; }
+
+    public String getDescription() { return description; }
 }
-

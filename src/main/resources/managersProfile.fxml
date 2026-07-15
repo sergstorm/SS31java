@@ -25,7 +25,8 @@
                         <VBox alignment="CENTER" prefHeight="220.0" prefWidth="350.0" style="-fx-background-color: #8E24AA;">
                             <children>
                                 <!-- Circular Avatar Base -->
-                                <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="110.0" prefWidth="110.0" style="-fx-background-color: #FFFFFF; -fx-background-radius: 1000;">
+                                <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="110.0"
+                                      prefWidth="110.0" style="-fx-background-color: #FFFFFF; -fx-background-radius: 1000;">
                                     <children>
                                         <Label text="👤" textFill="#8E24AA">
                                             <font>
@@ -43,7 +44,7 @@
                                 <Insets bottom="30.0" left="25.0" right="25.0" top="25.0" />
                             </padding>
                             <children>
-                                <Label text="Managers Name" textFill="#212121">
+                                <Label fx:id="nameUserMt" text="Managers Name" textFill="#212121">
                                     <font>
                                         <Font name="System Bold" size="26.0" />
                                     </font>

@@ -72,4 +72,8 @@ public abstract class Usuario
                 '}';
     }
 
+    public int getUsuarioId() {
+        int a = getUsuarioId();
+        return a;
+    }
 }

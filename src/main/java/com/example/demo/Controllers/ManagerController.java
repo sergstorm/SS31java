@@ -13,10 +13,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -33,6 +30,8 @@ public class ManagerController {
     public Button GBB;
     public Button LbB;
     public Button btnAddMember;
+    public Label nameUserMt;
+    public Button btnSubscribe;
     private Usuario usuario2 = UserSession.getInstance().getUsuario();
     private Stage stage;
     private Scene scene;
@@ -91,10 +90,12 @@ public class ManagerController {
         // Get the current Stage from the button click event
         stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         // Update the existing scene with the new root layout
+        //nameUserMt.setText(usuario2.getName());
         stage.getScene().getWindow().setHeight(800);
         stage.getScene().getWindow().setWidth(1200);
         stage.centerOnScreen();
         stage.getScene().setRoot(root);
+        //nameUserMt.setText(usuario2.getName());
     }
     @FXML
     public void switchToView15(ActionEvent event) throws IOException {
@@ -304,6 +305,7 @@ public class ManagerController {
                 managerList.add(m);
             }
             managersTable.setItems(managerList);
+            nameUserMt.setText(usuario2.getName());
         } catch (SQLException e) {
             System.err.println("Error en la consulta de mánagers: " + e.getMessage());
             e.printStackTrace();
@@ -326,6 +328,11 @@ public class ManagerController {
             //LbB.setDisable(true);
             System.out.println("Not a Boss");
         }
+    }
+
+    public void handleSubscribeWorker(ActionEvent actionEvent)
+    {
+
     }
 }
 

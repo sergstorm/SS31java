@@ -1,22 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<?import javafx.scene.text.Font?>
-<?import javafx.geometry.Insets?>
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.text.Font?>
-<AnchorPane xmlns="http://javafx.com/javafx/17"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.example.demo.Controllers.TaskController"
-            prefHeight="800"
-            prefWidth="1200">
+<AnchorPane prefHeight="800" prefWidth="1200" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.example.demo.Controllers.TaskController">
 
-    <HBox prefHeight="800.0"
-          prefWidth="1200.0"
-          style="-fx-background-color: #F5F7FA;">
+    <HBox prefHeight="800.0" prefWidth="1200.0" style="-fx-background-color: #F5F7FA;">
         <children>
 
             <!-- LEFT SIDEBAR: PROFILE CARD CONTAINER (Width: 350px) -->
@@ -61,32 +53,32 @@
                                 <children>
                                     <HBox alignment="CENTER_LEFT">
                                         <children>
-                                            <Label text="Id:" textFill="#757575" prefWidth="80.0" />
+                                            <Label prefWidth="80.0" text="Id:" textFill="#757575" />
                                             <!-- El ID no se debe editar porque es la llave primaria -->
                                             <TextField fx:id="txtId" editable="false" prefWidth="150.0" style="-fx-background-color: #E2E8F0;" />
                                         </children>
                                     </HBox>
                                     <HBox alignment="CENTER_LEFT">
                                         <children>
-                                            <Label text="Name:" textFill="#757575" prefWidth="80.0" />
+                                            <Label prefWidth="80.0" text="Name:" textFill="#757575" />
                                             <TextField fx:id="txtName" prefWidth="150.0" />
                                         </children>
                                     </HBox>
                                     <HBox alignment="CENTER_LEFT">
                                         <children>
-                                            <Label text="Priority:" textFill="#757575" prefWidth="80.0" />
+                                            <Label prefWidth="80.0" text="Priority:" textFill="#757575" />
                                             <TextField fx:id="txtPriority" prefWidth="150.0" />
                                         </children>
                                     </HBox>
                                     <HBox alignment="CENTER_LEFT">
                                         <children>
-                                            <Label text="Deadline:" textFill="#757575" prefWidth="80.0" />
+                                            <Label prefWidth="80.0" text="Deadline:" textFill="#757575" />
                                             <TextField fx:id="txtDeadline" prefWidth="150.0" />
                                         </children>
                                     </HBox>
                                     <HBox alignment="CENTER_LEFT">
                                         <children>
-                                            <Label text="Status:" textFill="#757575" prefWidth="80.0" />
+                                            <Label prefWidth="80.0" text="Status:" textFill="#757575" />
                                             <!-- Un ComboBox es mejor para el estado para evitar errores de escritura -->
                                             <ComboBox fx:id="cmbStatus" prefWidth="150.0" />
                                         </children>
@@ -95,9 +87,9 @@
                                     <!-- Botones de acción -->
                                     <HBox spacing="10.0" style="-fx-padding: 10 0 0 0;">
                                         <children>
-                                            <Button text="Limpiar" onAction="#limpiarSeleccion" style="-fx-background-color: #E2E8F0; -fx-text-fill: #475569; -fx-background-radius: 6;" />
-                                            <Button text="Guardar" onAction="#actualizarTarea" style="-fx-background-color: #2563EB; -fx-text-fill: white; -fx-background-radius: 6; -fx-font-weight: bold;" />
-                                            <Button text="Eliminar" onAction="#eliminarTarea" style="-fx-background-color: #EF4444; -fx-text-fill: white; -fx-background-radius: 6; -fx-font-weight: bold;" />
+                                            <Button onAction="#limpiarSeleccion" style="-fx-background-color: #E2E8F0; -fx-text-fill: #475569; -fx-background-radius: 6;" text="Limpiar" />
+                                            <Button onAction="#actualizarTarea" style="-fx-background-color: #2563EB; -fx-text-fill: white; -fx-background-radius: 6; -fx-font-weight: bold;" text="Guardar" />
+                                            <Button onAction="#eliminarTarea" style="-fx-background-color: #EF4444; -fx-text-fill: white; -fx-background-radius: 6; -fx-font-weight: bold;" text="Eliminar" />
                                         </children>
                                     </HBox>
                                 </children>
@@ -108,15 +100,9 @@
                             <Pane VBox.vgrow="ALWAYS" />
 
                             <!-- Action buttons -->
-                            <Button fx:id="editTableButton" onAction="#editWorkesTable" prefHeight="40.0" prefWidth="300.0"
-                                    style="-fx-background-color: transparent; -fx-border-color: #BDBDBD; -fx-border-radius: 6; -fx-text-fill: #757575; -fx-font-weight: bold;"
-                                    text="Agregar Nueva" />
-                            <Button fx:id="backButton" onAction="#logout" prefHeight="40.0" prefWidth="300.0"
-                                    style="-fx-background-color: transparent; -fx-border-color: #BDBDBD; -fx-border-radius: 6; -fx-text-fill: #757575; -fx-font-weight: bold;"
-                                    text="Logout" />
-                            <Button fx:id="backButton2" onAction="#goBackToLandingPage" prefHeight="40.0" prefWidth="300.0"
-                                    style="-fx-background-color: transparent; -fx-border-color: #BDBDBD; -fx-border-radius: 6; -fx-text-fill: #757575; -fx-font-weight: bold;"
-                                    text="BACK TO DASHBOARD" />
+                            <Button fx:id="editTableButton" onAction="#editWorkesTable" prefHeight="40.0" prefWidth="300.0" style="-fx-background-color: transparent; -fx-border-color: #BDBDBD; -fx-border-radius: 6; -fx-text-fill: #757575; -fx-font-weight: bold;" text="Agregar Nueva" />
+                            <Button fx:id="backButton" onAction="#logout" prefHeight="40.0" prefWidth="300.0" style="-fx-background-color: transparent; -fx-border-color: #BDBDBD; -fx-border-radius: 6; -fx-text-fill: #757575; -fx-font-weight: bold;" text="Logout" />
+                            <Button fx:id="backButton2" onAction="#goBackToLandingPage" prefHeight="40.0" prefWidth="300.0" style="-fx-background-color: transparent; -fx-border-color: #BDBDBD; -fx-border-radius: 6; -fx-text-fill: #757575; -fx-font-weight: bold;" text="BACK TO DASHBOARD" />
                         </children>
                     </VBox>
                 </children>
@@ -142,16 +128,21 @@
                                     <Label text="Monitor active workloads, operational delivery parameters, and logs." textFill="#8A92A6" />
                                 </children>
                             </VBox>
+                     <Button onAction="#subsc" fx:id="subscribeButton" mnemonicParsing="false" prefHeight="26.0" prefWidth="150.0" text="Subscribe">
+                        <font>
+                           <Font name="Droid Sans Mono Dotted" size="22.0" />
+                        </font>
+                     </Button>
                         </children>
                     </HBox>
 
                     <!-- COUNTER STATS CARDS ROW -->
-                    <HBox spacing="20.0" prefHeight="100.0">
+                    <HBox prefHeight="100.0" spacing="20.0">
                         <children>
                             <!-- Stat Card 1 -->
                             <VBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="240.0" style="-fx-background-color: #FFFFFF; -fx-background-radius: 8; -fx-padding: 15; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.02), 5, 0, 0, 2);">
                                 <children>
-                                    <Label text="Total Assigned Tasks" textFill="#8A92A6" style="-fx-font-size: 13;" />
+                                    <Label style="-fx-font-size: 13;" text="Total Assigned Tasks" textFill="#8A92A6" />
                                     <Label fx:id="tat" text="42" textFill="#212121">
                                         <font>
                                             <Font name="System Bold" size="28.0" />
@@ -162,7 +153,7 @@
                             <!-- Stat Card 2 -->
                             <VBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="240.0" style="-fx-background-color: #FFFFFF; -fx-background-radius: 8; -fx-padding: 15; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.02), 5, 0, 0, 2);">
                                 <children>
-                                    <Label  text="In Progress" textFill="#8A92A6" style="-fx-font-size: 13;" />
+                                    <Label style="-fx-font-size: 13;" text="In Progress" textFill="#8A92A6" />
                                     <Label fx:id="ipt" text="5" textFill="#094BFF">
                                         <font>
                                             <Font name="System Bold" size="28.0" />
@@ -173,7 +164,7 @@
                             <!-- Stat Card 3 -->
                             <VBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="240.0" style="-fx-background-color: #FFFFFF; -fx-background-radius: 8; -fx-padding: 15; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.02), 5, 0, 0, 2);">
                                 <children>
-                                    <Label  text="Completed Items" textFill="#8A92A6" style="-fx-font-size: 13;" />
+                                    <Label style="-fx-font-size: 13;" text="Completed Items" textFill="#8A92A6" />
                                     <Label fx:id="ct" text="37" textFill="#00AB33">
                                         <font>
                                             <Font name="System Bold" size="28.0" />
@@ -185,7 +176,7 @@
                     </HBox>
 
                     <!-- DATALIST / TABLE CONTAINER -->
-                    <VBox spacing="10.0" VBox.vgrow="ALWAYS" style="-fx-background-color: #FFFFFF; -fx-background-radius: 8; -fx-padding: 20; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.03), 8, 0, 0, 4);">
+                    <VBox spacing="10.0" style="-fx-background-color: #FFFFFF; -fx-background-radius: 8; -fx-padding: 20; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.03), 8, 0, 0, 4);" VBox.vgrow="ALWAYS">
                         <children>
                             <Label text="Task Assignment Directory" textFill="#212121">
                                 <font>
@@ -194,7 +185,7 @@
                             </Label>
 
                             <!-- Main TableView Component -->
-                            <TableView fx:id="tasksTable" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" style="-fx-background-color: transparent;">
+                            <TableView fx:id="tasksTable" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: transparent;" VBox.vgrow="ALWAYS">
                                 <columns>
                                     <TableColumn fx:id="TaskId" prefWidth="90.0" text="Task ID" />
                                     <TableColumn fx:id="speciality" prefWidth="280.0" text="Description" />
