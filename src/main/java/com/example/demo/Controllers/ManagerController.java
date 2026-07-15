@@ -32,6 +32,7 @@ public class ManagerController {
     public Button EBB;
     public Button GBB;
     public Button LbB;
+    public Button btnAddMember;
     private Usuario usuario2 = UserSession.getInstance().getUsuario();
     private Stage stage;
     private Scene scene;
@@ -95,6 +96,18 @@ public class ManagerController {
         stage.centerOnScreen();
         stage.getScene().setRoot(root);
     }
+    @FXML
+    public void switchToView15(ActionEvent event) throws IOException {
+        // Load the FXML file for view 2
+        root = FXMLLoader.load(getClass().getResource("/landing.fxml"));
+        // Get the current Stage from the button click event
+        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        // Update the existing scene with the new root layout
+        stage.getScene().getWindow().setHeight(800);
+        stage.getScene().getWindow().setWidth(1200);
+        stage.centerOnScreen();
+        stage.getScene().setRoot(root);
+    }
 
     @FXML
     public void switchToView8(ActionEvent event) throws IOException {
@@ -103,8 +116,21 @@ public class ManagerController {
         // Get the current Stage from the button click event
         stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         // Update the existing scene with the new root layout
-        stage.getScene().getWindow().setHeight(300);
+        stage.getScene().getWindow().setHeight(500);
         stage.getScene().getWindow().setWidth(400);
+        stage.centerOnScreen();
+        stage.getScene().setRoot(root);
+    }
+
+    @FXML
+    public void switchToView14(ActionEvent event) throws IOException {
+        // Load the FXML file for view 2
+        root = FXMLLoader.load(getClass().getResource("/editManagerTable.fxml"));
+        // Get the current Stage from the button click event
+        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        // Update the existing scene with the new root layout
+        stage.getScene().getWindow().setHeight(800);
+        stage.getScene().getWindow().setWidth(1200);
         stage.centerOnScreen();
         stage.getScene().setRoot(root);
     }
@@ -116,8 +142,20 @@ public class ManagerController {
     }
 
     public void goBackToLandingPageManagers(ActionEvent actionEvent) throws IOException {
-        System.out.println("go back to landing manageers page");
-        switchToView11(actionEvent);
+        if (Objects.equals(usuario2.getTipo(), "boss"))
+        {
+            System.out.println("Boss usuario --- ---");
+            managersTable.getSelectionModel().clearSelection();
+            mostrarDetallesManager(null);
+            System.out.println("go back to landing manageers page");
+            switchToView15(actionEvent);
+        }
+        else
+        {
+            switchToView11(actionEvent);
+            System.out.println("Not a Boss");
+        }
+
     }
 
     // Muestra la información del mánager en los TextFields izquierdos al hacer clic
@@ -161,60 +199,91 @@ public class ManagerController {
     // Acción del botón Guardar (Actualiza en BD)
     @FXML
     private void actualizarManager() {
-        if (txtManagerId.getText().isEmpty()) {
-            System.out.println("Selecciona un mánager de la tabla para editar.");
-            return;
-        }
 
-        // Corregido con los nombres de columna exactos de tu PostgreSQL
-        String sql = "UPDATE managers SET department = ?, alias = ?, achievement = ?, aim = ? WHERE manager_id = ?;";
-
-        try (PreparedStatement pstmt = con.prepareStatement(sql)) {
-            pstmt.setString(1, txtDepartment.getText());
-            pstmt.setString(2, txtAlias.getText());
-            pstmt.setString(3, txtAchievement.getText());
-            pstmt.setString(4, txtAim.getText());
-            pstmt.setInt(5, Integer.parseInt(txtManagerId.getText()));
-
-            int filasActualizadas = pstmt.executeUpdate();
-            if (filasActualizadas > 0) {
-                System.out.println("¡Mánager actualizado de forma exitosa!");
-                cargarManagersDesdeBD();
-                limpiarSeleccionManager();
+        if (Objects.equals(usuario2.getTipo(), "boss"))
+        {
+            System.out.println("Boss usuario --- ---");
+            if (txtManagerId.getText().isEmpty()) {
+                System.out.println("Selecciona un mánager de la tabla para editar.");
+                return;
             }
-        } catch (SQLException e) {
-            System.err.println("Error al intentar actualizar el mánager: " + e.getMessage());
-            e.printStackTrace();
+
+            // Corregido con los nombres de columna exactos de tu PostgreSQL
+            String sql = "UPDATE managers SET department = ?, alias = ?, achievement = ?, aim = ? WHERE manager_id = ?;";
+
+            try (PreparedStatement pstmt = con.prepareStatement(sql)) {
+                pstmt.setString(1, txtDepartment.getText());
+                pstmt.setString(2, txtAlias.getText());
+                pstmt.setString(3, txtAchievement.getText());
+                pstmt.setString(4, txtAim.getText());
+                pstmt.setInt(5, Integer.parseInt(txtManagerId.getText()));
+
+                int filasActualizadas = pstmt.executeUpdate();
+                if (filasActualizadas > 0) {
+                    System.out.println("¡Mánager actualizado de forma exitosa!");
+                    cargarManagersDesdeBD();
+                    limpiarSeleccionManager();
+                }
+            } catch (SQLException e) {
+                System.err.println("Error al intentar actualizar el mánager: " + e.getMessage());
+                e.printStackTrace();
+            }
         }
+        else
+        {
+            GBB.setDisable(true);
+            System.out.println("Not a Boss");
+        }
+
     }
+
 
 
     // Acción del botón Eliminar
     @FXML
     private void eliminarManager() {
-        Manager seleccionado = managersTable.getSelectionModel().getSelectedItem();
+        // 1. Verificar si el usuario actual es "boss"
+        if (Objects.equals(usuario2.getTipo(), "boss")) {
+            System.out.println("Boss usuario --- Intentando eliminar ---");
 
-        if (seleccionado == null) {
-            System.out.println("Selecciona un mánager de la tabla para eliminar.");
-            return;
-        }
-
-        String sql = "DELETE FROM managers WHERE manager_id = ?;";
-
-        try (PreparedStatement pstmt = con.prepareStatement(sql)) {
-            pstmt.setInt(1, seleccionado.getManagerId());
-
-            int filasAfectadas = pstmt.executeUpdate();
-            if (filasAfectadas > 0) {
-                System.out.println("Mánager eliminado exitosamente.");
-                cargarManagersDesdeBD();
-                limpiarSeleccionManager();
+            // 2. Verificar si hay un mánager seleccionado en la tabla o los campos
+            if (txtManagerId.getText().isEmpty()) {
+                System.out.println("Error: Selecciona un mánager de la tabla para poder eliminarlo.");
+                // Opcional: Podrías actualizar un Label de error aquí si lo deseas
+                return;
             }
-        } catch (SQLException e) {
-            System.err.println("Error al eliminar mánager: " + e.getMessage());
-            e.printStackTrace();
+
+            int idAEliminar = Integer.parseInt(txtManagerId.getText());
+
+            // 3. Sentencia SQL para eliminar por ID (Ajustada a la tabla de tu base de datos)
+            String sql = "DELETE FROM managers WHERE manager_id = ?;";
+
+            try (PreparedStatement pstmt = con.prepareStatement(sql)) {
+                pstmt.setInt(1, idAEliminar);
+
+                int filasEliminadas = pstmt.executeUpdate();
+                if (filasEliminadas > 0) {
+                    System.out.println("¡Mánager con ID " + idAEliminar + " eliminado de forma exitosa!");
+
+                    // 4. Refrescar la tabla y limpiar el formulario izquierdo
+                    cargarManagersDesdeBD();
+                    limpiarSeleccionManager();
+                } else {
+                    System.out.println("No se encontró ningún mánager con el ID especificado.");
+                }
+
+            } catch (SQLException e) {
+                System.err.println("Error crítico al intentar eliminar el mánager: " + e.getMessage());
+                e.printStackTrace();
+            }
+
+        } else {
+            // Si el usuario no es jefe, deshabilita el botón y deniega la acción
+            EBB.setDisable(true);
+            System.out.println("Acción denegada: El usuario actual no es un 'boss'.");
         }
     }
+
 
     // Asegúrate de tener implementado el método de lectura inicial
     private void cargarManagersDesdeBD() {
@@ -242,5 +311,21 @@ public class ManagerController {
     }
 
 
+    public void mostrarFormularioAgregar(ActionEvent actionEvent) throws IOException {
+        if (Objects.equals(usuario2.getTipo(), "boss"))
+        {
+
+            System.out.println("Boss usuario --- ---");
+            managersTable.getSelectionModel().clearSelection();
+            mostrarDetallesManager(null);
+            switchToView14(actionEvent);
+        }
+        else
+        {
+            btnAddMember.setDisable(true);
+            //LbB.setDisable(true);
+            System.out.println("Not a Boss");
+        }
+    }
 }
 

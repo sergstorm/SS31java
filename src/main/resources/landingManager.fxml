@@ -141,7 +141,7 @@
                             </Button>
 
 
-                            <Button fx:id="workersCardButton" onAction="#goToWorkersTable" style="-fx-background-color: transparent; -fx-padding: 0;">
+                            <Button fx:id="workersCardButton" onAction="#goToManagersTable" style="-fx-background-color: transparent; -fx-padding: 0;">
                                 <graphic>
                                     <!-- Added mouseTransparent="true" to pass click events to the Button -->
                                     <VBox mouseTransparent="true" prefHeight="300.0" prefWidth="250.0" style="-fx-background-color: #FFFFFF; -fx-background-radius: 4; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">

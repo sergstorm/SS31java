@@ -43,6 +43,11 @@ public class BossController {
     public TextField bossPassField;
     public Label bossMessageProfile;
     public Button bossChanfeProfileButton;
+    public Button btnCancel;
+    public Button btnSave;
+    public TextField txtNewName;
+    public TextField txtNewRole;
+    public TextField txtNewStatus;
     private Stage stage;
     private Scene scene;
     private Parent root;
@@ -120,7 +125,7 @@ public class BossController {
         // Get the current Stage from the button click event
         stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         // Update the existing scene with the new root layout
-        stage.getScene().getWindow().setHeight(300);
+        stage.getScene().getWindow().setHeight(500);
         stage.getScene().getWindow().setWidth(400);
         stage.centerOnScreen();
         stage.getScene().setRoot(root);
@@ -147,7 +152,7 @@ public class BossController {
         stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         // Update the existing scene with the new root layout
         stage.getScene().getWindow().setHeight(800);
-        stage.getScene().getWindow().setWidth(1200);
+        stage.getScene().getWindow().setWidth(1300);
         stage.centerOnScreen();
         stage.getScene().setRoot(root);
     }
@@ -403,6 +408,50 @@ public class BossController {
         {
             System.out.println("Not boss");
 
+        }
+    }
+
+    @FXML
+    public void cancelarRegistro(ActionEvent actionEvent) throws IOException {
+        // Obtiene la ventana actual (Stage) a partir del botón que disparó el evento y la cierra
+        switchToView7(actionEvent);
+    }
+
+    @FXML
+    public void guardarMiembro(ActionEvent actionEvent) {
+        String name = txtNewName.getText().trim();
+        String role = txtNewRole.getText().trim();
+        String status = txtNewStatus.getText().trim();
+
+        // 1. Validación básica de campos vacíos
+        if (name.isEmpty() || role.isEmpty() || status.isEmpty()) {
+            System.out.println("Error: Todos los campos son obligatorios.");
+            // Opcional: Aquí puedes cambiar un Label de error en tu interfaz si lo agregas
+            return;
+        }
+
+        // 2. Sentencia SQL de inserción (Ajusta los nombres de las columnas a tu tabla 'managers')
+        // Asumiendo que las columnas se llaman: department (como rol), alias (como nombre) y aim (como estado)
+        // O las columnas exactas que use tu tabla de base de datos.
+        String sql = "INSERT INTO managers (department, alias, aim) VALUES (?, ?, ?);";
+
+        try (PreparedStatement pstmt = con.prepareStatement(sql)) {
+            pstmt.setString(1, role);
+            pstmt.setString(2, name);
+            pstmt.setString(3, status);
+
+            int filasInsertadas = pstmt.executeUpdate();
+            if (filasInsertadas > 0) {
+                System.out.println("¡Nuevo miembro guardado exitosamente en la BD!");
+
+                // 3. CVolver
+                switchToView7(actionEvent);
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al intentar insertar el nuevo miembro: " + e.getMessage());
+            e.printStackTrace();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 }

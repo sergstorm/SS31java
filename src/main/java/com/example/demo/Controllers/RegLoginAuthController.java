@@ -55,6 +55,8 @@ public class RegLoginAuthController extends Usuario
         }
         Parent root = FXMLLoader.load(fxmlLocation);
         stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.getScene().getWindow().setHeight(500);
+        stage.getScene().getWindow().setWidth(700);
         stage.getScene().setRoot(root);
     }
 
@@ -64,6 +66,8 @@ public class RegLoginAuthController extends Usuario
         System.out.println(fxmlLocation+"  lockjdsb  ");
         Parent root = FXMLLoader.load(fxmlLocation);
         stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.getScene().getWindow().setHeight(500);
+        stage.getScene().getWindow().setWidth(400);
         stage.getScene().setRoot(root);
     }
 
@@ -169,7 +173,7 @@ public class RegLoginAuthController extends Usuario
    }
 
 
-    public void handleReg(ActionEvent actionEvent)
+    public void handleReg22(ActionEvent actionEvent)
     {
         //edti
         String a = regUsername.getText();
@@ -177,30 +181,95 @@ public class RegLoginAuthController extends Usuario
         String c = regPassword.getText();
         String d = "worker";
 
+        if (a.length()>3 && b.length()>5 && c.length()>3) {
 
+            System.out.println("Reg user table" + a + b + c);
+            //Task task = new Task(1,a,b,"deadline",c);
 
-        System.out.println("Reg user table"+a+b+c);
-        Task task = new Task(1,a,b,"deadline",c);
+            try {
+                // 1. Añadida la columna 'tipo_usuario' y los 4 signos de interrogación necesarios
+                String sql = "INSERT INTO usuario (name, email, password, tipo_usuario) VALUES (?, ?, ?, ?)";
+                PreparedStatement statement = con.prepareStatement(sql);
 
+                statement.setString(1, a);             // Se mapea a 'name'
+                statement.setString(2, b);             // Se mapea a 'email'
+                statement.setString(3, c);             // Se mapea a 'password'
+                statement.setString(4, d);      // Se mapea a 'tipo_usuario'
+
+                int filas = statement.executeUpdate();
+                if (filas > 0) {
+                    System.out.println("Agregado");
+                    regLable.setText("REGISTRADO");
+                    regButton.setDisable(true);
+                    // 1. Create a 3-second delay
+                    PauseTransition delay = new PauseTransition(Duration.seconds(3));
+                    // 2. Move the scene switch inside the finished event
+                    delay.setOnFinished(event -> {
+                        try {
+                            switchToView2(actionEvent);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    });
+                    // 3. Start the timer (code below this will still run immediately, but the switch waits)
+                    delay.play();
+
+                }
+            } catch (SQLException e) {
+                System.out.println("error");
+                regLable.setText("ERRORO IN REGISTRATION");
+                throw new RuntimeException(e);
+
+            }
+        }
+        else
+        {
+            regLable.setText("min 3 letras"+a+b+c);
+            System.out.println("error"+a+b+c);
+        }
+    }
+
+    public void handleReg(ActionEvent actionEvent) {
+        String a = regUsername.getText();
+        String b = regEmail.getText();
+        String c = regPassword.getText();
+        String d = "worker";
+
+        // 1. Validación de Nombre (Alfanumérico, más de 6 caracteres)
+        if (!a.matches("^[a-zA-Z0-9]{7,}$")) {
+            regLable.setText("Nombre: Mínimo 7 caracteres (solo letras y números)");
+            return; // Detiene la ejecución aquí
+        }
+
+        // 2. Validación de Email (Formato estándar)
+        if (!b.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")) {
+            regLable.setText("Email: Formato de correo electrónico inválido");
+            return; // Detiene la ejecución aquí
+        }
+
+        // 3. Validación de Contraseña (Mínimo 8 caracteres, incluye número y carácter especial)
+        if (!c.matches("^(?=.*[0-9])(?=.*[@$!%*?&])[A-Za-z0-9@$!%*?&]{8,}$")) {
+            regLable.setText("Password: Mínimo 8 caracteres, 1 número y 1 símbolo (@$!%*?&)");
+            return; // Detiene la ejecución aquí
+        }
+
+        // Si pasa todas las validaciones, procede con el registro
+        System.out.println("Reg user table" + a + b + c);
         try {
-            // 1. Añadida la columna 'tipo_usuario' y los 4 signos de interrogación necesarios
             String sql = "INSERT INTO usuario (name, email, password, tipo_usuario) VALUES (?, ?, ?, ?)";
             PreparedStatement statement = con.prepareStatement(sql);
-
-            statement.setString(1, a);             // Se mapea a 'name'
-            statement.setString(2, b);             // Se mapea a 'email'
-            statement.setString(3, c);             // Se mapea a 'password'
-            statement.setString(4, d);      // Se mapea a 'tipo_usuario'
+            statement.setString(1, a);
+            statement.setString(2, b);
+            statement.setString(3, c);
+            statement.setString(4, d);
 
             int filas = statement.executeUpdate();
-            if (filas > 0){
+            if (filas > 0) {
                 System.out.println("Agregado");
                 regLable.setText("REGISTRADO");
                 regButton.setDisable(true);
-               // 1. Create a 3-second delay
-                PauseTransition delay = new PauseTransition(Duration.seconds(3));
 
-               // 2. Move the scene switch inside the finished event
+                PauseTransition delay = new PauseTransition(Duration.seconds(3));
                 delay.setOnFinished(event -> {
                     try {
                         switchToView2(actionEvent);
@@ -208,17 +277,14 @@ public class RegLoginAuthController extends Usuario
                         e.printStackTrace();
                     }
                 });
-
-                // 3. Start the timer (code below this will still run immediately, but the switch waits)
                 delay.play();
-
             }
         } catch (SQLException e) {
             System.out.println("error");
-            regLable.setText("ERRORO IN REGISTRATION");
+            regLable.setText("ERROR EN REGISTRO (Base de Datos)");
             throw new RuntimeException(e);
-
         }
-
     }
+
+
 }

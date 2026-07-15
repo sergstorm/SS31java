@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="450.0" prefWidth="400.0" style="-fx-background-color: #F5F7FA;"
+            xmlns="http://javafx.com" xmlns:fx="http://fxml.com" fx:controller="com.example.demo.Controllers.BossController">
+    <children>
+        <VBox layoutX="20.0" layoutY="20.0" prefHeight="410.0" prefWidth="360.0" spacing="15.0" style="-fx-background-color: #FFFFFF; -fx-background-radius: 8; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 10, 0, 0, 5);" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
+            <padding>
+                <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+            </padding>
+            <children>
+                <!-- Encabezado -->
+                <Label text="Nuevo Miembro" textFill="#8E24AA">
+                    <font>
+                        <Font name="System Bold" size="22.0" />
+                    </font>
+                </Label>
+                <Label text="Ingresa los datos del nuevo integrante del equipo." textFill="#757575" wrapText="true" />
+
+                <!-- Campo Nombre -->
+                <VBox spacing="5.0">
+                    <children>
+                        <Label text="Nombre Completo" textFill="#475569" style="-fx-font-weight: bold;" />
+                        <TextField fx:id="txtNewName" prefHeight="38.0" promptText="Ej. Juan Pérez" style="-fx-background-color: #F8FAFC; -fx-border-color: #E2E8F0; -fx-border-radius: 5; -fx-background-radius: 5;" />
+                    </children>
+                </VBox>
+
+                <!-- Campo Rol -->
+                <VBox spacing="5.0">
+                    <children>
+                        <Label text="Rol / Puesto" textFill="#475569" style="-fx-font-weight: bold;" />
+                        <TextField fx:id="txtNewRole" prefHeight="38.0" promptText="Ej. Developer, Designer" style="-fx-background-color: #F8FAFC; -fx-border-color: #E2E8F0; -fx-border-radius: 5; -fx-background-radius: 5;" />
+                    </children>
+                </VBox>
+
+                <!-- Campo Estado -->
+                <VBox spacing="5.0">
+                    <children>
+                        <Label text="Estado Inicial" textFill="#475569" style="-fx-font-weight: bold;" />
+                        <TextField fx:id="txtNewStatus" prefHeight="38.0" promptText="Ej. Activo, En Espera" style="-fx-background-color: #F8FAFC; -fx-border-color: #E2E8F0; -fx-border-radius: 5; -fx-background-radius: 5;" />
+                    </children>
+                    <VBox.margin>
+                        <Insets bottom="10.0" />
+                    </VBox.margin>
+                </VBox>
+
+                <!-- Botones de Acción -->
+                <HBox alignment="CENTER_RIGHT" spacing="12.0">
+                    <children>
+                        <Button fx:id="btnCancel" onAction="#cancelarRegistro" prefHeight="38.0" prefWidth="100.0" style="-fx-background-color: #E2E8F0; -fx-text-fill: #475569; -fx-background-radius: 6; -fx-cursor: hand;" text="Cancelar" />
+                        <Button fx:id="btnSave" onAction="#guardarMiembro" prefHeight="38.0" prefWidth="120.0" style="-fx-background-color: #8E24AA; -fx-text-fill: white; -fx-background-radius: 6; -fx-font-weight: bold; -fx-cursor: hand;" text="Guardar" />
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+    </children>
+</AnchorPane>

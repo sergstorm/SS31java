@@ -18,7 +18,7 @@ public class HelloApplication extends Application {
 
         // 3. Set up and display the stage
         primaryStage.setTitle("JavaFX FXML Scene Switcher");
-        primaryStage.setScene(new Scene(root, 400, 300));
+        primaryStage.setScene(new Scene(root, 400, 500));
         primaryStage.show();
     }
 
