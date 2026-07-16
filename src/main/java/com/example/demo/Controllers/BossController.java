@@ -28,6 +28,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Objects;
 
@@ -73,13 +74,6 @@ public class BossController {
 
     @FXML
     public void switchToView5(ActionEvent event) throws IOException {
-        // Load the FXML file for view 2
-
-        //FXMLLoader loader = new FXMLLoader(
-        //        getClass().getResource("workersProfile.fxml"));
-        // Parent root = loader.load();
-        //fet datos from database//
-
 
         root = FXMLLoader.load(getClass().getResource("/workersProfile.fxml"));
         // Get the current Stage from the button click event
@@ -136,6 +130,7 @@ public class BossController {
         // Load the FXML file for view 2
         root = FXMLLoader.load(getClass().getResource("/bossProfile.fxml"));
         // Get the current Stage from the button click event
+
         stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         // Update the existing scene with the new root layout
         stage.getScene().getWindow().setHeight(600);
@@ -186,9 +181,6 @@ public class BossController {
 
     public Button myComplexButton;
 
-    public void handleRegistration(ActionEvent actionEvent) {
-
-    }
 
     public void goToManagersTable(ActionEvent actionEvent) throws IOException {
         switchToView9(actionEvent);
@@ -239,81 +231,104 @@ public class BossController {
         switchToView8(actionEvent);
     }
 
-    public void goBackToMain(ActionEvent actionEvent) throws IOException {
-        switchToView6(actionEvent);
+    /**
+     * PASO 1: Muestra los datos viejos (old data) en los campos de la vista
+     * apenas se carga la pantalla del perfil.
+     */
+    public void initBossData(Usuario bossUsuario) {
+        this.usuario2 = bossUsuario;
+
+        if (this.usuario2 != null) {
+            int idUsuario = this.usuario2.getId();
+
+            // Consultar los datos actuales (viejos) en la base de datos
+            String sqlSelect = "SELECT name, email, password FROM usuario WHERE usuario_id = ?;";
+
+            try (PreparedStatement pstmt = con.prepareStatement(sqlSelect)) {
+                pstmt.setInt(1, idUsuario);
+
+                try (ResultSet rs = pstmt.executeQuery()) {
+                    if (rs.next()) {
+                        // AQUÍ se ponen los datos viejos en la vista para que el usuario los vea primero
+                        bossNameField.setText(rs.getString("name"));
+                        bossEmailField.setText(rs.getString("email"));
+                        bossPassField.setText(rs.getString("password"));
+
+                        System.out.println("Datos viejos cargados en la vista con éxito.");
+                    }
+                }
+            } catch (SQLException e) {
+                System.err.println("Error al precargar los datos del Boss");
+                e.printStackTrace();
+                bossMessageProfile.setText("Error al cargar datos");
+            }
+        }
     }
 
-    public void boosHandleSave(ActionEvent actionEvent) {
 
-       // Usuario usuarioActual = UserSession.getInstance().getUsuario();
+
+    @FXML
+    public void boosHandleSave(ActionEvent actionEvent) {
         Usuario usuarioActual = usuario2;
 
-// 1. Obtener los nuevos valores desde los campos de tu vista (JavaFX)
+        // Validación de seguridad para evitar pantallas vacías
+        if (usuarioActual == null) {
+            bossMessageProfile.setText("Error: Sin sesión activa");
+            return;
+        }
+
+        // Captura los nuevos valores modificados por el usuario sobre los campos
         String nuevoName = bossNameField.getText();
         String nuevoEmail = bossEmailField.getText();
         String nuevoPassword = bossPassField.getText();
-
-        System.out.println(usuarioActual + " Usuario actual ");
-
         int idUsuario = usuarioActual.getId();
-        System.out.println(idUsuario + " this usuario id    +    simpleb---");
 
-        System.out.println("Actualizando usuario ID " + idUsuario + " con nombre: " + nuevoName);
+        String sqlUpdate = "UPDATE usuario SET name = ?, email = ?, password = ? WHERE usuario_id = ?;";
 
-// 2. Sentencia SQL con 4 parámetros (?)
-        String sql = "UPDATE usuario SET name = ?, email = ?, password = ? WHERE usuario_id = ?;";
-
-// Uso de try-with-resources para asegurar el cierre del statement
-        try (PreparedStatement statement = con.prepareStatement(sql)) {
-
-            // 3. Inyectar los parámetros en orden estricto (1, 2, 3)
+        try (PreparedStatement statement = con.prepareStatement(sqlUpdate)) {
             statement.setString(1, nuevoName);
             statement.setString(2, nuevoEmail);
             statement.setString(3, nuevoPassword);
-
-            // CORRECCIÓN AQUÍ: Asignar el parámetro 4 para el WHERE usuario_id = ?
             statement.setInt(4, idUsuario);
 
-            // 4. Ejecutar la consulta en la base de datos
             int filasActualizadas = statement.executeUpdate();
 
             if (filasActualizadas > 0) {
-                System.out.println("UPDATE " + filasActualizadas + " - ¡Usuario actualizado con éxito!");
+                System.out.println("UPDATE exitoso. Nuevos datos guardados para ID: " + idUsuario);
 
-                // Sincronizar el objeto en memoria para reflejar los cambios inmediatamente
+                // Sincronizar el objeto Java en memoria con los nuevos cambios confirmados
                 usuarioActual.setName(nuevoName);
                 usuarioActual.setEmail(nuevoEmail);
                 usuarioActual.setPassword(nuevoPassword);
 
                 bossMessageProfile.setText("Exitoso");
+                bossChanfeProfileButton.setDisable(true); // Deshabilitar botón para evitar doble envío
 
-                bossChanfeProfileButton.setDisable(true);
-                // 1. Create a 3-second delay
+                // Temporizador de 3 segundos antes de cambiar de vista
                 PauseTransition delay = new PauseTransition(Duration.seconds(3));
-
-                // 2. Move the scene switch inside the finished event
                 delay.setOnFinished(event -> {
                     try {
                         switchToView6(actionEvent);
                     } catch (Exception e) {
+                        System.err.println("Error al redirigir la vista: " + e.getMessage());
                         e.printStackTrace();
                     }
                 });
-
-                // 3. Start the timer (code below this will still run immediately, but the switch waits)
                 delay.play();
 
             } else {
-                System.out.println("No se encontró ningún usuario con ID: " + idUsuario);
+                bossMessageProfile.setText("Error al actualizar");
             }
 
         } catch (SQLException e) {
-            System.err.println("Error al ejecutar el UPDATE en la tabla usuario");
+            bossMessageProfile.setText("Error de Base de Datos");
             e.printStackTrace();
-            throw new RuntimeException(e);
         }
-
     }
+
+
+
+
 
 
     @FXML

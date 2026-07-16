@@ -1,0 +1,206 @@
+-- 1. Eliminar las tablas si ya existen (en orden inverso por sus claves foráneas)
+DROP TABLE IF EXISTS inscripcion CASCADE;
+DROP TABLE IF EXISTS tasks CASCADE;
+DROP TABLE IF EXISTS managers CASCADE;
+DROP TABLE IF EXISTS usuario CASCADE;
+
+-- 2. CREACIÓN DE TABLAS
+
+-- Tabla: usuario
+CREATE TABLE usuario (
+    usuario_id SERIAL PRIMARY KEY,
+    name VARCHAR(150) NOT NULL,
+    email VARCHAR(180) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    tipo_usuario VARCHAR(50) NOT NULL, -- 'worker', 'manager', 'boss'
+    active BOOLEAN DEFAULT FALSE
+);
+
+-- Tabla: managers
+CREATE TABLE managers (
+    manager_id SERIAL PRIMARY KEY,
+    usuario_id INT NOT NULL,
+    departamento VARCHAR(100),
+    CONSTRAINT fk_managers_usuario FOREIGN KEY (usuario_id) REFERENCES usuario(usuario_id) ON DELETE CASCADE
+);
+
+-- Tabla: tasks
+CREATE TABLE tasks (
+    task_id SERIAL PRIMARY KEY,
+    task_name VARCHAR(150) NOT NULL,
+    priority VARCHAR(50) NOT NULL, -- 'Low', 'Medium', 'High'
+    status VARCHAR(50) NOT NULL,   -- 'In Progress', 'Completed'
+    description TEXT,
+    deadline DATE
+);
+
+-- Tabla: inscripcion
+CREATE TABLE inscripcion (
+    inscripcion_id SERIAL PRIMARY KEY,
+    usuario_id INT NOT NULL,
+    task_id INT NOT NULL,
+    fecha_inscripcion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    -- Restricciones de integridad
+    CONSTRAINT fk_inscripcion_usuario FOREIGN KEY (usuario_id) REFERENCES usuario(usuario_id) ON DELETE CASCADE,
+    CONSTRAINT fk_inscripcion_task FOREIGN KEY (task_id) REFERENCES tasks(task_id) ON DELETE CASCADE,
+
+    -- Restricción única que controlamos en JavaFX (Error 23505)
+    CONSTRAINT uq_usuario_tarea UNIQUE (usuario_id, task_id)
+);
+
+
+-- =========================================================================
+-- INSERCIÓN DE TUS DATOS DE PRUEBA REALES
+-- =========================================================================
+
+-- Registros en 'usuario'
+INSERT INTO usuario (usuario_id, name, email, password, tipo_usuario, active) VALUES
+(17, 'g', 'g', 'g', 'worker', false),
+(16, 'n', 'n', 'n', 'worker', false),
+(18, 'm', 'm', 'm', 'worker', false),
+(15, 'a', 'a', 'a', 'manager', false),
+(20, 'vvvvvv', 'vvvvvvv', 'vvvvv', 'worker', false),
+(21, 'qweqweqwe', 'serg@c.com', 'qweqwe1Q@', 'worker', false),
+(22, 'qweqweqwe', 'qweqwe@qwe.com', 'qweqwe1Q%', 'worker', false),
+(19, 'f', 'f', 'f', 'boss', false);
+
+-- Registros de prueba en 'managers' (Vinculado al usuario 15 que es manager)
+INSERT INTO managers (usuario_id, departamento) VALUES
+(15, 'Sistemas');
+
+-- Registros en 'tasks'
+INSERT INTO tasks (task_id, task_name, priority, status, description, deadline) VALUES
+(18, 'errete5', 'Low', 'In Progress', 'Descripción de la tarea 18', '2026-07-16'),
+(19, 'rfesrsresreser', 'Medium', 'In Progress', 'Descripción de la tarea 19', '2026-07-07'),
+(22, 'ZZZZ', 'High', 'Completed', 'Descripción de la tarea 22', '2026-07-24'),
+(23, 'SsWSs', 'High', 'Completed', 'Descripción de la tarea 23', '2026-07-07'),
+(24, 'dwdwed', 'Medium', 'Completed', 'Descripción de la tarea 24', '2026-07-10'),
+(25, 'Tarea Extra', 'Low', 'In Progress', 'Descripción de la tarea 25', '2026-08-01');
+
+-- Registros en 'inscripcion'
+INSERT INTO inscripcion (inscripcion_id, usuario_id, task_id, fecha_inscripcion) VALUES
+(1, 17, 22, '2026-07-15 00:00:00'),
+(2, 16, 18, '2026-07-15 00:00:00'),
+(3, 18, 25, '2026-07-15 00:00:00'),
+(4, 22, 23, '2026-07-15 00:00:00'),
+(5, 21, 24, '2026-07-15 00:00:00'),
+(6, 20, 25, '2026-07-15 00:00:00'),
+(10, 16, 22, '2026-07-15 00:00:00'),
+(13, 21, 23, '2026-07-15 00:00:00'),
+(14, 22, 18, '2026-07-15 00:00:00'),
+(17, 18, 18, '2026-07-15 00:00:00');
+
+
+-- 3. AJUSTE DE CONTADORES SECUENCIALES (SERIAL)
+-- Evita fallos de 'Clave duplicada' en los próximos INSERTs automáticos desde JavaFX
+SELECT setval('usuario_usuario_id_seq', COALESCE((SELECT MAX(usuario_id) FROM usuario), 1));
+SELECT setval('managers_manager_id_seq', COALESCE((SELECT MAX(manager_id) FROM managers), 1));
+SELECT setval('tasks_task_id_seq', COALESCE((SELECT MAX(task_id) FROM tasks), 1));
+SELECT setval('inscripcion_inscripcion_id_seq', COALESCE((SELECT MAX(inscripcion_id) FROM inscripcion), 1));
+
+
+//mysql
+
+-- 1. Desactivar verificación de claves foráneas temporalmente para borrar las tablas limpiamente
+SET FOREIGN_KEY_CHECKS = 0;
+DROP TABLE IF EXISTS inscripcion CASCADE;
+DROP TABLE IF EXISTS tasks CASCADE;
+DROP TABLE IF EXISTS managers CASCADE;
+DROP TABLE IF EXISTS usuario CASCADE;
+SET FOREIGN_KEY_CHECKS = 1;
+
+-- 2. CREACIÓN DE TABLAS (Usando motor InnoDB para asegurar soporte de claves foráneas)
+
+-- Tabla: usuario
+CREATE TABLE usuario (
+    usuario_id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(150) NOT NULL,
+    email VARCHAR(180) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    tipo_usuario VARCHAR(50) NOT NULL, -- 'worker', 'manager', 'boss'
+    active BOOLEAN DEFAULT FALSE
+) ENGINE=InnoDB;
+
+-- Tabla: managers
+CREATE TABLE managers (
+    manager_id INT AUTO_INCREMENT PRIMARY KEY,
+    usuario_id INT NOT NULL,
+    departamento VARCHAR(100),
+    CONSTRAINT fk_managers_usuario FOREIGN KEY (usuario_id) REFERENCES usuario(usuario_id) ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+-- Tabla: tasks
+CREATE TABLE tasks (
+    task_id INT AUTO_INCREMENT PRIMARY KEY,
+    task_name VARCHAR(150) NOT NULL,
+    priority VARCHAR(50) NOT NULL, -- 'Low', 'Medium', 'High'
+    status VARCHAR(50) NOT NULL,   -- 'In Progress', 'Completed'
+    description TEXT,
+    deadline DATE
+) ENGINE=InnoDB;
+
+-- Tabla: inscripcion
+CREATE TABLE inscripcion (
+    inscripcion_id INT AUTO_INCREMENT PRIMARY KEY,
+    usuario_id INT NOT NULL,
+    task_id INT NOT NULL,
+    fecha_inscripcion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    -- Restricciones de integridad
+    CONSTRAINT fk_inscripcion_usuario FOREIGN KEY (usuario_id) REFERENCES usuario(usuario_id) ON DELETE CASCADE,
+    CONSTRAINT fk_inscripcion_task FOREIGN KEY (task_id) REFERENCES tasks(task_id) ON DELETE CASCADE,
+
+    -- Restricción única que arroja el código de error duplicado controlado en JavaFX
+    CONSTRAINT uq_usuario_tarea UNIQUE (usuario_id, task_id)
+) ENGINE=InnoDB;
+
+
+-- =========================================================================
+-- INSERCIÓN DE DATOS DE PRUEBA REALES
+-- =========================================================================
+
+-- Registros en 'usuario'
+INSERT INTO usuario (usuario_id, name, email, password, tipo_usuario, active) VALUES
+(17, 'g', 'g', 'g', 'worker', false),
+(16, 'n', 'n', 'n', 'worker', false),
+(18, 'm', 'm', 'm', 'worker', false),
+(15, 'a', 'a', 'a', 'manager', false),
+(20, 'vvvvvv', 'vvvvvvv', 'vvvvv', 'worker', false),
+(21, 'qweqweqwe', 'serg@c.com', 'qweqwe1Q@', 'worker', false),
+(22, 'qweqweqwe', 'qweqwe@qwe.com', 'qweqwe1Q%', 'worker', false),
+(19, 'f', 'f', 'f', 'boss', false);
+
+-- Registros de prueba en 'managers' (Vinculado al usuario 15)
+INSERT INTO managers (usuario_id, departamento) VALUES
+(15, 'Sistemas');
+
+-- Registros en 'tasks'
+INSERT INTO tasks (task_id, task_name, priority, status, description, deadline) VALUES
+(18, 'errete5', 'Low', 'In Progress', 'Descripción de la tarea 18', '2026-07-16'),
+(19, 'rfesrsresreser', 'Medium', 'In Progress', 'Descripción de la tarea 19', '2026-07-07'),
+(22, 'ZZZZ', 'High', 'Completed', 'Descripción de la tarea 22', '2026-07-24'),
+(23, 'SsWSs', 'High', 'Completed', 'Descripción de la tarea 23', '2026-07-07'),
+(24, 'dwdwed', 'Medium', 'Completed', 'Descripción de la tarea 24', '2026-07-10'),
+(25, 'Tarea Extra', 'Low', 'In Progress', 'Descripción de la tarea 25', '2026-08-01');
+
+-- Registros en 'inscripcion'
+INSERT INTO inscripcion (inscripcion_id, usuario_id, task_id, fecha_inscripcion) VALUES
+(1, 17, 22, '2026-07-15 00:00:00'),
+(2, 16, 18, '2026-07-15 00:00:00'),
+(3, 18, 25, '2026-07-15 00:00:00'),
+(4, 22, 23, '2026-07-15 00:00:00'),
+(5, 21, 24, '2026-07-15 00:00:00'),
+(6, 20, 25, '2026-07-15 00:00:00'),
+(10, 16, 22, '2026-07-15 00:00:00'),
+(13, 21, 23, '2026-07-15 00:00:00'),
+(14, 22, 18, '2026-07-15 00:00:00'),
+(17, 18, 18, '2026-07-15 00:00:00');
+
+
+-- 3. AJUSTE DE CONTADORES SECUENCIALES (AUTO_INCREMENT)
+-- En MySQL, esto previene colisiones numéricas al realizar nuevos INSERTs manuales desde la UI
+ALTER TABLE usuario AUTO_INCREMENT = 23;
+ALTER TABLE managers AUTO_INCREMENT = 2;
+ALTER TABLE tasks AUTO_INCREMENT = 26;
+ALTER TABLE inscripcion AUTO_INCREMENT = 18;

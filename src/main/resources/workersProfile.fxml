@@ -36,7 +36,7 @@
                             <Insets bottom="30.0" left="25.0" right="25.0" top="25.0" />
                         </padding>
                         <children>
-                            <Label text="John Doe" textFill="#212121">
+                            <Label fx:id="nameWorkerProfileTable" text="John Doe" textFill="#212121">
                                 <font>
                                     <Font name="System Bold" size="26.0" />
                                 </font>

@@ -32,6 +32,7 @@ public class TaskController {
 
     public Button subscribeButton;
     public Button btnSubscribe;
+    public Label nameWorkerProfileTable;
     // 1. Declarar los Labels del FXML
     @FXML private Label lblId;
     @FXML private Label lblName;
@@ -73,6 +74,17 @@ public class TaskController {
     @FXML private TableView<Usuario> tableWorkers; // Tu clase modelo Usuario
     @FXML private TableView<Task> tableTasks;       // Tu clase modelo Task
 
+    public void initData(Usuario usuarioLogueado) {
+        this.usuario2 = usuarioLogueado;
+
+        if (this.usuario2 != null) {
+            // Mueve aquí tu antigua línea 99 de código de forma segura
+            nameWorkerProfileTable.setText(this.usuario2.getName());
+
+            // Si necesitas cargar datos de la BD específicos de este usuario, hazlo aquí:
+            // cargarDatosDesdeBD();
+        }
+    }
     @FXML
     void handleSubscribeWorker(ActionEvent event) {
         Usuario selectedWorker = tableWorkers.getSelectionModel().getSelectedItem();
@@ -95,6 +107,7 @@ public class TaskController {
      */
     @FXML
     public void initialize() {
+        //initData(usuario2);
         // 1. Configurar los estados disponibles en el ComboBox
         cmbStatus.setItems(FXCollections.observableArrayList("In Progress", "Completed"));
 
@@ -158,6 +171,7 @@ public class TaskController {
             System.err.println("Error al intentar leer la tabla 'tasks': " + e.getMessage());
             e.printStackTrace();
         }
+
     }
 
     @FXML
@@ -180,7 +194,7 @@ public class TaskController {
         // Get the current Stage from the button click event
         stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         // Update the existing scene with the new root layout
-        stage.getScene().getWindow().setHeight(300);
+        stage.getScene().getWindow().setHeight(500);
         stage.getScene().getWindow().setWidth(400);
         stage.centerOnScreen();
         stage.getScene().setRoot(root);
@@ -213,6 +227,7 @@ public class TaskController {
     }
 
     public void editWorkesTable(ActionEvent actionEvent) throws IOException {
+        initData(usuario2);
         if (usuario2.getTipo().equals("manager"))
         {
             System.out.println("manager");
@@ -233,6 +248,7 @@ public class TaskController {
     }
 
     public void goBackToLandingPage(ActionEvent actionEvent) throws IOException {
+        initData(usuario2);
         if (usuario2.getTipo().equals("manager"))
         {
             System.out.println("manager");
@@ -248,6 +264,7 @@ public class TaskController {
 
     @FXML
     private void limpiarSeleccion() {
+        initData(usuario2);
         if (usuario2.getTipo().equals("manager"))
         {
             System.out.println("manager");
@@ -265,7 +282,7 @@ public class TaskController {
 
     @FXML
     private void eliminarTarea() {
-
+              initData(usuario2);
         if (usuario2.getTipo().equals("manager"))
         {
             System.out.println("manager");
@@ -354,6 +371,7 @@ public class TaskController {
     @FXML
     private void actualizarTarea() {
         // 1. Validar rol de usuario primero
+        initData(usuario2);
         if (!usuario2.getTipo().equals("manager")) {
             System.out.println("No eres Manager. No tienes permisos para actualizar tareas.");
             return;
@@ -441,10 +459,11 @@ public class TaskController {
 
 
     public void subsc(ActionEvent actionEvent) throws IOException {
+        initData(usuario2);
         System.out.println(usuario2.getTipo()+"usuarioa 2");
-       // if (usuario2.getTipo().equals("manager"))
+        if (usuario2.getTipo().equals("manager"))
         switchSbsribeTable(actionEvent);
-       // else subscribeButton.setDisable(true);
+        else subscribeButton.setDisable(true);
     }
 
 
